@@ -1,8 +1,8 @@
 {
-  "name": "utoolslib",
+  "name": "algorythms-labs",
   "version": "1.0.0",
-  "description": "Simple library for text parsing and modificaiton.",
-  "main": "./src/index.js",
+  "description": "",
+  "main": ".src/index.js",
   "scripts": {
     "test": "npm run lint",
     "lint": "eslint **/*.js",
@@ -18,20 +18,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/Secret333Boy/utoolslib.git"
+    "url": "https://github.com/Secret333Boy/algorythms-labs.git"
   },
-  "keywords": [
-    "parsing",
-    "text",
-    "encryption"
-  ],
+  "keywords": [],
   "contributors": [
-    "Eugene Pashkovsky <pashkovskiy.eugen@gmail.com>",
-    "Grigoriy Ustymenko <gromgoriy@gmail.com>"
+    "Eugene Pashkovsky <pashkovskiy.eugen@gmail.com>"
   ],
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/Secret333Boy/utoolslib/issues"
+    "url": "https://github.com/Secret333Boy/algorythms-labs/issues"
   },
-  "homepage": "https://github.com/Secret333Boy/utoolslib#readme"
+  "homepage": "https://github.com/Secret333Boy/algorythms-labs#readme"
 }
