@@ -22,6 +22,10 @@ class Matrix {
     return res;
   }
 
+  getElement(x, y) {
+    return this.arr[y, x];
+  }
+
   add(matrix) {
     if (!Matrix.isMatrix(matrix)) {
       throw new TypeError('Must be an instance of Matrix');
