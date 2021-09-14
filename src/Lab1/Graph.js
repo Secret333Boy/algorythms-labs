@@ -1,12 +1,12 @@
 'use strict';
 
-const Vertix = require('./Vertix.js');
+const Vertex = require('./Vertex.js');
 const Matrix = require('./Matrix.js');
 
 class Graph {
   constructor(vertices, matrix, weights) {
-    if (vertices.some(el => !Vertix.isVertix(el))) {
-      throw new TypeError('Must be instance of Vertix');
+    if (vertices.some(el => !Vertex.isVertex(el))) {
+      throw new TypeError('Must be instance of Vertex');
     }
     if (!Matrix.isMatrix(matrix)) {
       throw new TypeError('Must be instance of Matrix');
