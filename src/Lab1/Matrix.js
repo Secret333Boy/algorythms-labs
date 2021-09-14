@@ -46,7 +46,6 @@ class Matrix {
     }
   }
 
-  //Implement later
   mult(matrix) {
     if (!Matrix.isMatrix(matrix)) {
       throw new TypeError('Must be an instance of Matrix');
@@ -56,7 +55,14 @@ class Matrix {
       return new Error('Imposible to multiply matrixes with unapropiate size');
     }
 
-    console.log('Not implemented yet');
+    for (let i = 0; i < this.arr.length; i++) {
+      for (let j = 0; j < this.arr[i].length; j++) {
+        this.arr[i][j] = this.arr[i][0] + matrix.arr[0][j];
+        for (let k = 1; k < this.xLength; k++) {
+          this.arr[i][j] += this.arr[i][k] * matrix.arr[k][j];
+        }
+      }
+    }
   }
 
   transpone() {
