@@ -8,7 +8,7 @@ console.log('What lab do you want to execute? [1]');
 
 stdinput().then(line => {
   const num = +line;
-  if (num >= 0 && num < 2) {
+  if (num >= 0 && num < labs.length) {
     const labInstance = new labs[num - 1]();
     labInstance.start();
   } else {
