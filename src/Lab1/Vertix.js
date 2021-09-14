@@ -1,7 +1,7 @@
 'use strict';
 
 class Vertix {
-  constructor(x, y, data = null) {
+  constructor(x = null, y = null, data = null) {
     this.x = x;
     this.y = y;
     this.data = data;
