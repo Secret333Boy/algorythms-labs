@@ -23,7 +23,11 @@ class Matrix {
   }
 
   getElement(x, y) {
-    return this.arr[y, x];
+    return this.arr[(y, x)];
+  }
+
+  setElement(x, y, data) {
+    this.arr[y][x] = data;
   }
 
   add(matrix) {
@@ -34,6 +38,12 @@ class Matrix {
     if (this.xLength !== matrix.xLength || this.yLength !== matrix.yLength) {
       return new Error('Imposible to add matrixes with different size');
     }
+
+    for (let i = 0; i < this.arr.length; i++) {
+      for (let j = 0; j < this.arr[i].length; j++) {
+        this.arr[i][j] += matrix.arr[i][j];
+      }
+    }
   }
 
   //Implement later
@@ -41,7 +51,22 @@ class Matrix {
     if (!Matrix.isMatrix(matrix)) {
       throw new TypeError('Must be an instance of Matrix');
     }
+
+    if (this.xLength !== matrix.yLength || this.yLength !== matrix.xLength) {
+      return new Error('Imposible to multiply matrixes with unapropiate size');
+    }
+
     console.log('Not implemented yet');
+  }
+
+  transpone() {
+    const res = [];
+    for (let i = 0; i < this.arr.length; i++) {
+      for (let j = 0; j < this.arr[i].length; j++) {
+        res[j][i] = this.arr[i][j];
+      }
+    }
+    this.arr = res;
   }
 
   get xLength() {
@@ -50,6 +75,14 @@ class Matrix {
 
   get yLength() {
     return this.arr.length;
+  }
+
+  get rows() {
+    return this.arr;
+  }
+
+  get cols() {
+    return this.transpone().arr;
   }
 }
 

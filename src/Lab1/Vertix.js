@@ -6,6 +6,10 @@ class Vertix {
     this.y = y;
     this.data = data;
   }
+
+  static isVertix(obj) {
+    return obj instanceof Vertix;
+  }
 }
 
 module.exports = Vertix;
