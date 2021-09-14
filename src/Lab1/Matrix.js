@@ -28,6 +28,7 @@ class Matrix {
 
   setElement(x, y, data) {
     this.arr[y][x] = data;
+    return this.arr;
   }
 
   add(matrix) {
@@ -44,6 +45,7 @@ class Matrix {
         this.arr[i][j] += matrix.arr[i][j];
       }
     }
+    return this.arr;
   }
 
   mult(matrix) {
@@ -63,6 +65,8 @@ class Matrix {
         }
       }
     }
+
+    return this.arr;
   }
 
   transpone() {
@@ -73,6 +77,7 @@ class Matrix {
       }
     }
     this.arr = res;
+    return this.arr;
   }
 
   get xLength() {
