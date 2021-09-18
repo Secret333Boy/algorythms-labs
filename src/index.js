@@ -2,7 +2,7 @@
 
 const labs = [];
 labs.push(require('./Lab1/Lab1.js'));
-const stdinput = require('./Stdinput.js');
+const stdinput = require('./stdinput.js');
 
 console.log('What lab do you want to execute? [1]');
 

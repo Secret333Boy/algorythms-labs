@@ -11,8 +11,10 @@ class Lab1 {
     gui.sendMessage(puzzle.printState());
 
     console.time('Solution');
-    puzzle.findSolution();
-    console.timeEnd('Solution');
+    puzzle.findSolution().then(data => {
+      gui.sendMessage('Solution found:\n' + data);
+      console.timeEnd('Solution');
+    });
   }
 }
 

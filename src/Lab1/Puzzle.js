@@ -41,9 +41,11 @@ class Puzzle {
     return res;
   }
 
-  findSolution() {
-    const tree = new Tree(this.state);
-    console.dir(tree, { depth: null });
+  async findSolution() {
+    return new Promise(resolve => {
+      const tree = new Tree(this.state);
+      resolve(tree);
+    });
   }
 }
 
