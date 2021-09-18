@@ -6,6 +6,7 @@
   "scripts": {
     "test": "npm run lint && npm run lint-prettier",
     "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
     "lint-prettier": "prettier -c \"**/*.js\" \"**/*.json\" \"**/*.md\" \"**/*.yml\"",
     "prepare": "husky install",
     "fmt": "prettier --write \"**/*.js\" \"**/*.json\" \"**/*.md\" \".*rc\" \"**/*.yml\""
