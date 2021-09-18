@@ -1,7 +1,7 @@
 'use strict';
 
 class Matrix {
-  constructor(arr) {
+  constructor(arr = []) {
     this.arr = this.#alignRows(arr);
   }
 
@@ -33,6 +33,7 @@ class Matrix {
 
   pushRow(row = []) {
     this.arr.push(row);
+    this.arr = this.#alignRows(this.arr);
     return this;
   }
 

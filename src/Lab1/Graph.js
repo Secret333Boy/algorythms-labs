@@ -4,7 +4,7 @@ const Vertex = require('./Vertex.js');
 const Matrix = require('./Matrix.js');
 
 class Graph {
-  constructor(verteces = [], matrix = []) {
+  constructor(verteces = [], matrix = new Matrix()) {
     if (verteces.some(el => !Vertex.isVertex(el))) {
       throw new TypeError('Must be instance of Vertex');
     }

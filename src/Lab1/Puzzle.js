@@ -3,6 +3,7 @@
 const State = require('./State.js');
 const shuffle = require('./shuffle.js');
 const Matrix = require('./Matrix.js');
+const Tree = require('./Tree.js');
 
 class Puzzle {
   constructor(initialState = false) {
@@ -24,22 +25,26 @@ class Puzzle {
     let res = '';
     for (const row of this.state.matrix.rows) {
       if (row.includes(null)) {
-        row[row.indexOf(null)] = ' ';
+        if (row.indexOf(null) !== 0) {
+          res +=
+            row.slice(0, row.indexOf(null)).join(' ') +
+            '  ' +
+            row.slice(row.indexOf(null)).join(' ') +
+            '\n';
+        } else {
+          res += ' ' + row.join(' ') + '\n';
+        }
+      } else {
+        res += row.join(' ') + '\n';
       }
-
-      res += row.join(' ') + '\n';
     }
     return res;
   }
 
   findSolution() {
-    const arr = [];
-    for (let i = 0; i < 10000; i++) {
-      for (let j = 0; j < 10000; j++) {
-        arr.push(i - j);
-      }
-    }
-    return arr;
+    const tree = new Tree();
+    tree.insert([this.state]);
+    console.dir(tree, { depth: null });
   }
 }
 
