@@ -4,11 +4,11 @@ const Matrix = require('./Matrix.js');
 
 class State {
   constructor(matrix) {
-    this.#checkArr(matrix);
+    this.#checkMatrix(matrix);
     this.matrix = matrix;
   }
 
-  #checkArr(matrix) {
+  #checkMatrix(matrix) {
     if (
       Matrix.isMatrix(matrix) &&
       matrix.yLength !== 3 &&
