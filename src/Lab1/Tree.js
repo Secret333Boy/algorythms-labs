@@ -1,10 +1,13 @@
 'use strict';
 
-const Graph = require('./Graph');
+const Graph = require('./Graph.js');
+const Matrix = require('./Matrix.js');
+const Vertex = require('./Vertex.js');
 
 class Tree extends Graph {
-  constructor(vertices, matrix) {
-    super(vertices, matrix);
+  constructor(obj) {
+    const vertex = Vertex.isVertex(obj) ? obj : new Vertex(obj);
+    super([vertex], new Matrix([[0]]));
   }
 }
 

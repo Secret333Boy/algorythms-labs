@@ -23,8 +23,7 @@ class Graph {
   #linkVerteces(verteces, matrix) {
     for (const i in verteces) {
       const vertex = verteces[i];
-
-      for (const j in matrix.getRows()) {
+      for (const j in matrix.rows) {
         if (matrix.getElement(i, j) !== 0) {
           vertex.linkTo(verteces[j]);
         }

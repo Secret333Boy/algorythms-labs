@@ -1,9 +1,9 @@
 'use strict';
 
 const State = require('./State.js');
-const shuffle = require('./shuffle.js');
 const Matrix = require('./Matrix.js');
 const Tree = require('./Tree.js');
+const shuffle = require('./shuffle.js');
 
 class Puzzle {
   constructor(initialState = false) {
@@ -42,8 +42,7 @@ class Puzzle {
   }
 
   findSolution() {
-    const tree = new Tree();
-    tree.insert([this.state]);
+    const tree = new Tree(this.state);
     console.dir(tree, { depth: null });
   }
 }
