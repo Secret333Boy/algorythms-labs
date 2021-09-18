@@ -35,5 +35,8 @@
   "bugs": {
     "url": "https://github.com/Secret333Boy/algorythms-labs/issues"
   },
-  "homepage": "https://github.com/Secret333Boy/algorythms-labs#readme"
+  "homepage": "https://github.com/Secret333Boy/algorythms-labs#readme",
+  "dependencies": {
+    "utoolslib": "^0.0.2"
+  }
 }
