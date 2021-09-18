@@ -7,14 +7,15 @@ const reader = readline.createInterface({
   terminal: true,
 });
 
-const stdinput = () => new Promise(
-  resolve => {
-    reader.on('line', line => {
-      resolve(line);
-      reader.close();
-    });
-  },
-  reject => reject()
-);
+const stdinput = () =>
+  new Promise(
+    resolve => {
+      reader.on('line', line => {
+        resolve(line);
+        reader.close();
+      });
+    },
+    reject => reject()
+  );
 
 module.exports = stdinput;

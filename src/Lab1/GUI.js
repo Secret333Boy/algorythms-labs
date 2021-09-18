@@ -1,8 +1,7 @@
 'use strict';
 
 class GUI {
-  constructor() {
-  }
+  constructor() {}
 }
 
 module.exports = GUI;
