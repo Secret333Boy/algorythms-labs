@@ -73,8 +73,9 @@ class Matrix {
 
   transpone() {
     const res = [];
-    for (const i in this.arr) {
-      for (const j in this.arr[i]) {
+    for (const j in this.arr) {
+      res.push([]);
+      for (const i in this.arr[j]) {
         res[j][i] = this.arr[i][j];
       }
     }
@@ -95,6 +96,14 @@ class Matrix {
 
   get cols() {
     return this.transpone().arr;
+  }
+
+  set cols(arr) {
+    this.arr = new Matrix(arr).transpone().arr;
+  }
+
+  set rows(arr) {
+    this.arr = arr;
   }
 }
 
