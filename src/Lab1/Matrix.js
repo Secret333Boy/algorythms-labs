@@ -31,6 +31,18 @@ class Matrix {
     return this;
   }
 
+  pushRow(row = []) {
+    this.arr.push(row);
+    return this;
+  }
+
+  pushCol(col = []) {
+    for (const i in this.arr) {
+      this.arr[i].push(col[i] || null);
+    }
+    return this;
+  }
+
   add(matrix) {
     if (!Matrix.isMatrix(matrix)) {
       throw new TypeError('Must be an instance of Matrix');

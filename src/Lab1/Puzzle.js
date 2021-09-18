@@ -5,9 +5,8 @@ const shuffle = require('./shuffle.js');
 const Matrix = require('./Matrix.js');
 
 class Puzzle {
-  constructor(autoGenerate = true, initialState = false) {
-    this.state =
-      autoGenerate || !initialState ? this.#generateState() : initialState;
+  constructor(initialState = false) {
+    this.state = !initialState ? this.#generateState() : initialState;
   }
 
   #generateState() {
@@ -31,6 +30,16 @@ class Puzzle {
       res += row.join(' ') + '\n';
     }
     return res;
+  }
+
+  findSolution() {
+    const arr = [];
+    for (let i = 0; i < 10000; i++) {
+      for (let j = 0; j < 10000; j++) {
+        arr.push(i - j);
+      }
+    }
+    return arr;
   }
 }
 
