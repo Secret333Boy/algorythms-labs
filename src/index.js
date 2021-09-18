@@ -1,8 +1,8 @@
 'use strict';
 
 const labs = [];
-labs.push(require('./Lab1/lab1.js'));
-const stdinput = require('./stdinput.js');
+labs.push(require('./Lab1/Lab1.js'));
+const stdinput = require('./Stdinput.js');
 
 console.log('What lab do you want to execute? [1]');
 
