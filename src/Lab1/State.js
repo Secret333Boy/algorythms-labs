@@ -49,7 +49,7 @@ class State {
     let { x, y } = this.matrix.find(null);
     x = Number(x);
     y = Number(y);
-    return State.possible[x][y];
+    return State.possible[y][x];
   }
 
   static possible = [

@@ -26,6 +26,8 @@ class Graph {
       for (const j in matrix.rows) {
         if (matrix.getElement(i, j) !== 0) {
           vertex.linkTo(verteces[j]);
+        } else {
+          vertex.unlinkFrom(verteces[j]);
         }
       }
     }
@@ -56,7 +58,7 @@ class Graph {
   }
 
   #add(obj) {
-    this.verteces.push(new Vertex(obj));
+    this.verteces.push(Vertex.isVertex(obj) ? obj : new Vertex(obj));
     this.matrix.pushRow().pushCol();
   }
 }

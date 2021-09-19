@@ -8,7 +8,21 @@ class Tree extends Graph {
   constructor(obj) {
     const vertex = Vertex.isVertex(obj) ? obj : new Vertex(obj);
     super([vertex], new Matrix([[0]]));
-    this.extendable = [vertex];
+    this.expandable = [vertex];
+  }
+
+  expand(vertex, ...verteces) {
+    if (this.expandable.includes(vertex)) {
+      this.insert(verteces);
+      const v1 = this.verteces.indexOf(vertex);
+      for (const v of verteces) {
+        const v2 = this.verteces.indexOf(v);
+        this.connect(v1, v2);
+      }
+
+      this.expandable.splice(this.expandable.indexOf(vertex), 1);
+      this.expandable.push(...verteces);
+    }
   }
 }
 
