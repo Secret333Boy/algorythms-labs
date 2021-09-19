@@ -44,25 +44,26 @@ class State {
   get possibleChanges() {
     const { nullX, nullY } = this.matrix.find(null);
 
-    const possible = [
-      [
-        ['t', 'l'],
-        ['t', 'l', 'r'],
-        ['t', 'r'],
-      ],
-      [
-        ['t', 'b', 'l'],
-        ['t', 'b', 'l', 'r'],
-        ['t', 'b', 'r'],
-      ],
-      [
-        ['b', 'l'],
-        ['b', 'l', 'r'],
-        ['b', 'r'],
-      ],
-    ];
-    return possible[nullX][nullY];
+    return State.possible[nullX][nullY];
   }
+
+  static possible = [
+    [
+      ['t', 'l'],
+      ['t', 'l', 'r'],
+      ['t', 'r'],
+    ],
+    [
+      ['t', 'b', 'l'],
+      ['t', 'b', 'l', 'r'],
+      ['t', 'b', 'r'],
+    ],
+    [
+      ['b', 'l'],
+      ['b', 'l', 'r'],
+      ['b', 'r'],
+    ],
+  ];
 }
 
 module.exports = State;
