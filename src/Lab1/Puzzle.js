@@ -24,19 +24,12 @@ class Puzzle {
   printState() {
     let res = '';
     for (const row of this.state.matrix.rows) {
-      if (row.includes(null)) {
-        if (row.indexOf(null) !== 0) {
-          res +=
-            row.slice(0, row.indexOf(null)).join(' ') +
-            '  ' +
-            row.slice(row.indexOf(null)).join(' ') +
-            '\n';
-        } else {
-          res += ' ' + row.join(' ') + '\n';
-        }
-      } else {
-        res += row.join(' ') + '\n';
+      const newRow = row.slice(0);
+
+      if (newRow.includes(null)) {
+        newRow[newRow.indexOf(null)] = ' ';
       }
+      res += newRow.join(' ') + '\n';
     }
     return res;
   }

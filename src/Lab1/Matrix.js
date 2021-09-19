@@ -44,6 +44,15 @@ class Matrix {
     return this;
   }
 
+  find(item) {
+    for (const i in this.arr) {
+      for (const j in this.arr[i]) {
+        if (this.arr[i][j] === item) return { x: i, y: j };
+      }
+    }
+    return false;
+  }
+
   add(matrix) {
     if (!Matrix.isMatrix(matrix)) {
       throw new TypeError('Must be an instance of Matrix');
