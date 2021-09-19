@@ -34,7 +34,7 @@ class Graph {
   }
 
   isConnected(v1, v2) {
-    return this.matrix.getElement(v1, v2) !== 0;
+    return +this.matrix.getElement(v1, v2) !== 0;
   }
 
   connect(v1, v2, weight = 1) {
