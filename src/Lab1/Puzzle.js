@@ -37,7 +37,7 @@ class Puzzle {
     return res;
   }
 
-  async findSolution() {
+  findSolution() {
     return new Promise(resolve => {
       const rootNode = new Vertex({
         state: this.state,
@@ -45,20 +45,30 @@ class Puzzle {
         parent: null,
       });
       const tree = new Tree(rootNode);
-      const possibleNextStates = [];
-      for (const possibleChange of rootNode.data.state.possibleChanges) {
-        possibleNextStates.push(
-          new Vertex({
-            state: rootNode.data.state.changeState(possibleChange),
-            chosenChange: possibleChange,
-            parent: rootNode,
-          })
-        );
+      while (tree.expandable.length !== 0) {
+        for (const parent of tree.expandable) {
+          const possibleNextStates = [];
+          for (const possibleChange of parent.data.state.possibleChanges) {
+            possibleNextStates.push(
+              new Vertex({
+                state: parent.data.state.changeState(possibleChange),
+                chosenChange: possibleChange,
+                parent,
+              })
+            );
+          }
+          tree.expand(parent, ...possibleNextStates);
+        }
       }
-      tree.expand(rootNode, ...possibleNextStates);
       resolve(tree);
     });
   }
+
+  static solutionTemplate = [
+    [1, 2, 3],
+    [4, 5, 6],
+    [7, 8, null],
+  ];
 }
 
 module.exports = Puzzle;
