@@ -47,7 +47,7 @@ class Matrix {
   find(item) {
     for (const i in this.arr) {
       for (const j in this.arr[i]) {
-        if (this.arr[i][j] === item) return { x: i, y: j };
+        if (this.arr[i][j] === item) return { y: i, x: j };
       }
     }
     return false;

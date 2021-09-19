@@ -20,31 +20,36 @@ class State {
   }
 
   changeState(dir) {
-    const { nullX, nullY } = this.matrix.find(null);
+    let { x, y } = this.matrix.find(null);
+    x = Number(x);
+    y = Number(y);
+
     const arr = this.matrix.arr.slice(0);
+
     let buf;
     if (dir === 't') {
-      buf = arr[nullX][nullY + 1];
-      arr[nullX][nullY + 1] = null;
+      buf = arr[y + 1][x];
+      arr[y + 1][x] = null;
     } else if (dir === 'b') {
-      buf = arr[nullX][nullY - 1];
-      arr[nullX][nullY - 1] = null;
+      buf = arr[y - 1][x];
+      arr[y - 1][x] = null;
     } else if (dir === 'l') {
-      buf = arr[nullX + 1][nullY];
-      arr[nullX + 1][nullY] = null;
+      buf = arr[y][x + 1];
+      arr[y][x + 1] = null;
     } else if (dir === 'r') {
-      buf = arr[nullX - 1][nullY];
-      arr[nullX - 1][nullY - 1] = null;
+      buf = arr[y][x - 1];
+      arr[y][x - 1] = null;
     }
-    arr[nullX][nullY] = buf;
+    arr[y][x] = buf;
     const newMatrix = new Matrix(arr);
     return new State(newMatrix);
   }
 
   get possibleChanges() {
-    const { nullX, nullY } = this.matrix.find(null);
-
-    return State.possible[nullX][nullY];
+    let { x, y } = this.matrix.find(null);
+    x = Number(x);
+    y = Number(y);
+    return State.possible[x][y];
   }
 
   static possible = [

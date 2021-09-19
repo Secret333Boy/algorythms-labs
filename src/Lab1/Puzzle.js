@@ -7,7 +7,9 @@ const shuffle = require('./shuffle.js');
 
 class Puzzle {
   constructor(initialState = false) {
-    this.state = !initialState ? this.#generateState() : initialState;
+    this.state = !initialState
+      ? this.#generateState()
+      : new State(new Matrix(initialState));
   }
 
   #generateState() {
