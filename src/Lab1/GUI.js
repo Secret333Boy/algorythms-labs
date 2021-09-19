@@ -2,7 +2,19 @@
 
 class GUI {
   constructor() {
-    console.log('started!');
+    this.clear();
+    this.drawCallbacks = [];
+  }
+
+  update() {
+    this.clear();
+    for (const callback of this.drawCallbacks) {
+      callback();
+    }
+  }
+
+  addElementCallback(...callbacks) {
+    this.drawCallbacks.push(...callbacks);
   }
 
   clear() {

@@ -45,20 +45,19 @@ class Puzzle {
         parent: null,
       });
       const tree = new Tree(rootNode);
-      while (tree.expandable.length !== 0) {
-        for (const parent of tree.expandable) {
-          const possibleNextStates = [];
-          for (const possibleChange of parent.data.state.possibleChanges) {
-            possibleNextStates.push(
-              new Vertex({
-                state: parent.data.state.changeState(possibleChange),
-                chosenChange: possibleChange,
-                parent,
-              })
-            );
-          }
-          tree.expand(parent, ...possibleNextStates);
+      while (tree.expandable.length < 1000) {
+        const parent = tree.expandable[0];
+        const childVerteces = [];
+        for (const possibleChange of parent.data.state.possibleChanges) {
+          childVerteces.push(
+            new Vertex({
+              state: parent.data.state.changeState(possibleChange),
+              chosenChange: possibleChange,
+              parent,
+            })
+          );
         }
+        tree.expand(parent, ...childVerteces);
       }
       resolve(tree);
     });

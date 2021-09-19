@@ -2,6 +2,7 @@
 
 const GUI = require('./GUI.js');
 const Puzzle = require('./Puzzle.js');
+const { fork } = require('child_process');
 class Lab1 {
   start() {
     const gui = new GUI();
@@ -10,11 +11,11 @@ class Lab1 {
     gui.sendMessage('Current state:\n');
     gui.sendMessage(puzzle.printState());
 
-    console.time('Solution');
+    const child = fork(__dirname + '/ResourceScanner.js');
+    child.send('start');
     puzzle.findSolution().then(data => {
-      gui.sendMessage('Solution found:\n');
-      console.dir(data, { depth: 4 });
-      console.timeEnd('Solution');
+      gui.sendMessage('Solution found:\n', data);
+      child.send('end');
     });
   }
 }
