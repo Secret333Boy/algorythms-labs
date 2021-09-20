@@ -8,9 +8,11 @@ class Lab1 {
     const gui = new GUI();
     const puzzle = new Puzzle();
     gui.clear();
-    gui.sendMessage('Current state:\n');
-    gui.sendMessage(puzzle.printState());
-
+    const guiCallback = () => {
+      gui.sendMessage('Current state:\n');
+      gui.sendMessage(puzzle.printState());
+    };
+    gui.addElementCallback(guiCallback);
     const child = fork(__dirname + '/ResourceScanner.js');
     child.send('start');
     puzzle.findSolution().then(data => {

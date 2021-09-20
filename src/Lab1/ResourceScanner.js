@@ -1,13 +1,16 @@
 'use strict';
 
-process.on('message', msg => {
+let gui;
+process.on('message', (msg, handle) => {
   if (msg === 'start') {
     console.time('Solution');
-    setInterval(() => {
+    gui.addElementCallback(() => {
       console.timeLog('Solution');
-    }, 10);
+    });
   } else if (msg === 'end') {
     console.timeEnd('Solution');
     process.exit();
+  } else if (msg === 'gui') {
+    gui = handle;
   }
 });
