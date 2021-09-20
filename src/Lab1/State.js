@@ -19,12 +19,25 @@ class State {
     }
   }
 
+  printState() {
+    let res = '';
+    for (const row of this.matrix.rows) {
+      const newRow = row.slice(0);
+
+      if (newRow.includes(null)) {
+        newRow[newRow.indexOf(null)] = ' ';
+      }
+      res += newRow.join(' ') + '\n';
+    }
+    return res;
+  }
+
   changeState(dir) {
     let { x, y } = this.matrix.find(null);
     x = Number(x);
     y = Number(y);
 
-    const arr = this.matrix.arr.slice(0);
+    const arr = this.matrix.copy().arr;
 
     let buf;
     if (dir === 't') {

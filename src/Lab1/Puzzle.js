@@ -24,19 +24,6 @@ class Puzzle {
     return new State(arr);
   }
 
-  printState() {
-    let res = '';
-    for (const row of this.state.matrix.rows) {
-      const newRow = row.slice(0);
-
-      if (newRow.includes(null)) {
-        newRow[newRow.indexOf(null)] = ' ';
-      }
-      res += newRow.join(' ') + '\n';
-    }
-    return res;
-  }
-
   findSolution(logger) {
     return new Promise(resolve => {
       const rootNode = new Vertex({
@@ -45,22 +32,30 @@ class Puzzle {
         parent: null,
       });
       const tree = new Tree(rootNode);
-      while (tree.expandable.length < 100000) {
+      let solution = false;
+      while (!solution) {
         const parent = tree.expandable[0];
         const childVerteces = [];
         for (const possibleChange of parent.data.state.possibleChanges) {
-          childVerteces.push(
-            new Vertex({
-              state: parent.data.state.changeState(possibleChange),
-              chosenChange: possibleChange,
-              parent,
-            })
-          );
+          const newVertex = new Vertex({
+            state: parent.data.state.changeState(possibleChange),
+            chosenChange: possibleChange,
+            parent,
+          });
+          if (
+            newVertex.data.state.matrix.isEqual(
+              new Matrix(Puzzle.solutionTemplate)
+            )
+          ) {
+            solution = newVertex;
+            break;
+          }
+          childVerteces.push(newVertex);
         }
         tree.expand(parent, ...childVerteces);
         logger.send({ name: 'memory', data: process.memoryUsage() });
       }
-      resolve(tree);
+      resolve(solution);
     });
   }
 

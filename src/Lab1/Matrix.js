@@ -53,6 +53,27 @@ class Matrix {
     return false;
   }
 
+  copy() {
+    const res = [];
+    for (const i in this.arr) {
+      res.push(new Array(...this.arr[i]));
+    }
+    return new Matrix(res);
+  }
+
+  isEqual(matrix) {
+    let res = true;
+    for (const i in this.arr) {
+      for (const j in matrix.arr) {
+        if (this.arr[i][j] !== matrix.arr[i][j]) {
+          res = false;
+          break;
+        }
+      }
+    }
+    return res;
+  }
+
   add(matrix) {
     if (!Matrix.isMatrix(matrix)) {
       throw new TypeError('Must be an instance of Matrix');

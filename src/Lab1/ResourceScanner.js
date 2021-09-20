@@ -26,6 +26,10 @@ process.on('message', msg => {
   } else if (msg.name === 'end') {
     gui.removeElementCallback(logging);
     console.timeEnd('Solution');
+    gui.addElementCallback(() => {
+      gui.sendMessage('Solution found!');
+      console.dir(msg.data.data.state, { depth: null });
+    });
     process.exit();
   } else if (msg.name === 'memory') {
     memory = msg.data;
