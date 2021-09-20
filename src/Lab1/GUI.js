@@ -26,6 +26,7 @@ class GUI {
 
   removeElementCallback(id) {
     this.drawCallbacks.splice(id, 1);
+    this.update();
   }
 
   clearElementCallbacks() {

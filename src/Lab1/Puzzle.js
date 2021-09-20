@@ -37,7 +37,7 @@ class Puzzle {
     return res;
   }
 
-  findSolution() {
+  findSolution(logger) {
     return new Promise(resolve => {
       const rootNode = new Vertex({
         state: this.state,
@@ -45,7 +45,7 @@ class Puzzle {
         parent: null,
       });
       const tree = new Tree(rootNode);
-      while (tree.expandable.length < 1000) {
+      while (tree.expandable.length < 100000) {
         const parent = tree.expandable[0];
         const childVerteces = [];
         for (const possibleChange of parent.data.state.possibleChanges) {
@@ -58,6 +58,7 @@ class Puzzle {
           );
         }
         tree.expand(parent, ...childVerteces);
+        logger.send({ name: 'memory', data: process.memoryUsage() });
       }
       resolve(tree);
     });

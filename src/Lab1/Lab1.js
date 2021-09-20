@@ -7,17 +7,12 @@ class Lab1 {
   start() {
     const gui = new GUI();
     const puzzle = new Puzzle();
-    gui.clear();
-    const guiCallback = () => {
-      gui.sendMessage('Current state:\n');
-      gui.sendMessage(puzzle.printState());
-    };
-    gui.addElementCallback(guiCallback);
+
     const child = fork(__dirname + '/ResourceScanner.js');
-    child.send('start');
-    puzzle.findSolution().then(data => {
+    child.send({ name: 'start', initialState: puzzle.printState() });
+    puzzle.findSolution(child).then(data => {
       gui.sendMessage('Solution found:\n', data);
-      child.send('end');
+      child.send({ name: 'end' });
     });
   }
 }

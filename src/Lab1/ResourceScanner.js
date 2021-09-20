@@ -1,16 +1,33 @@
 'use strict';
 
-let gui;
-process.on('message', (msg, handle) => {
-  if (msg === 'start') {
-    console.time('Solution');
-    gui.addElementCallback(() => {
+const GUI = require('./GUI.js');
+
+const gui = new GUI();
+let logging, memory;
+process.on('message', msg => {
+  if (msg.name === 'start') {
+    gui.clear();
+    const guiCallback = () => {
+      gui.sendMessage('Initial state:\n');
+      gui.sendMessage(msg.initialState);
+
+      if (memory) {
+        gui.sendMessage(memory.rss / 1000000 + 'Mb');
+      }
+    };
+    gui.addElementCallback(guiCallback);
+    logging = gui.addElementCallback(() => {
       console.timeLog('Solution');
     });
-  } else if (msg === 'end') {
+    setInterval(() => {
+      gui.update();
+    }, 100);
+    console.time('Solution');
+  } else if (msg.name === 'end') {
+    gui.removeElementCallback(logging);
     console.timeEnd('Solution');
     process.exit();
-  } else if (msg === 'gui') {
-    gui = handle;
+  } else if (msg.name === 'memory') {
+    memory = msg.data;
   }
 });
