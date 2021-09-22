@@ -25,37 +25,63 @@ class Puzzle {
   }
 
   findSolution(logger) {
-    return new Promise(resolve => {
+    return new Promise((resolve, reject) => {
+      process.on('uncaughtException', e => {
+        logger.send({ name: 'error', data: e });
+      });
+
       const rootNode = new Vertex({
         state: this.state,
         chosenChange: null,
         parent: null,
+        depth: 0,
       });
       const tree = new Tree(rootNode);
-      let solution = false;
-      while (!solution) {
-        const parent = tree.expandable[0];
-        const childVerteces = [];
-        for (const possibleChange of parent.data.state.possibleChanges) {
-          const newVertex = new Vertex({
-            state: parent.data.state.changeState(possibleChange),
-            chosenChange: possibleChange,
-            parent,
-          });
-          if (
-            newVertex.data.state.matrix.isEqual(
-              new Matrix(Puzzle.solutionTemplate)
-            )
-          ) {
-            solution = newVertex;
-            break;
-          }
-          childVerteces.push(newVertex);
+
+      const closed = [];
+      while (true) {
+        const parent = tree.expandable.shift();
+        const parentState = parent.data.state;
+
+        if (parentState.matrix.isEqual(new Matrix(Puzzle.solutionTemplate))) {
+          console.log(parentState.printState());
+          resolve(parent);
+          break;
         }
-        tree.expand(parent, ...childVerteces);
-        logger.send({ name: 'memory', data: process.memoryUsage() });
+
+        const newVerteces = [];
+        for (const possibleChange of parentState.possibleChanges) {
+          const newState = parentState.changeState(possibleChange);
+          if (!closed.includes(newState.matrix.toString())) {
+            newVerteces.push(
+              new Vertex({
+                state: newState,
+                chosenChange: possibleChange,
+                parent,
+                depth: parent.data.depth + 1,
+              })
+            );
+          }
+        }
+
+        if (newVerteces.length !== 0) {
+          tree.expand(parent, ...newVerteces);
+          tree.expandable.push(...newVerteces);
+        }
+        closed.push(parentState.matrix.toString());
+
+        if (tree.expandable.length === 0) {
+          reject('Expandable is empty');
+        }
+
+        logger.send({
+          name: 'data',
+          data: {
+            memory: process.resourceUsage().maxRSS,
+            depth: parent.data.depth,
+          },
+        });
       }
-      resolve(solution);
     });
   }
 

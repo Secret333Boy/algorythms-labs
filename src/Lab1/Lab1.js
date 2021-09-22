@@ -7,10 +7,25 @@ class Lab1 {
     const puzzle = new Puzzle();
 
     const child = fork(__dirname + '/ResourceScanner.js');
-    child.send({ name: 'start', initialState: puzzle.state.printState() });
-    puzzle.findSolution(child).then(data => {
-      child.send({ name: 'end', data });
+    child.send({
+      name: 'start',
+      initialState: puzzle.state.printState(),
+      debug: false,
     });
+    puzzle
+      .findSolution(child)
+      .then(vertex => {
+        const res = [];
+        while (vertex.data.chosenChange) {
+          res.unshift(vertex.data.chosenChange);
+          vertex = vertex.data.parent;
+        }
+
+        child.send({ name: 'end', data: res.join('->') });
+      })
+      .catch(reason => {
+        child.send({ name: 'error', data: reason });
+      });
   }
 }
 

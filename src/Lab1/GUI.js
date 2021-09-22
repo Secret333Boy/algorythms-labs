@@ -39,8 +39,13 @@ class GUI {
   }
 
   sendMessage(message) {
-    console.log('\x1b[35m');
+    console.log('\x1b[33m');
     console.log(message);
+  }
+
+  sendError(message) {
+    console.log('\x1b[32m');
+    console.error(message);
   }
 }
 

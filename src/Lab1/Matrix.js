@@ -125,6 +125,16 @@ class Matrix {
     return new Matrix(res);
   }
 
+  toString() {
+    let res = '';
+    for (const i in this.arr) {
+      for (const j in this.arr[i]) {
+        res += this.arr[i][j] === null ? '0' : String(this.arr[i][j]);
+      }
+    }
+    return res;
+  }
+
   get xLength() {
     return this.arr[0].length;
   }

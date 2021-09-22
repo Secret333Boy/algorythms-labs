@@ -12,17 +12,14 @@ class Tree extends Graph {
   }
 
   expand(vertex, ...verteces) {
-    if (this.expandable.includes(vertex)) {
-      this.insert(verteces);
-      const v1 = this.verteces.indexOf(vertex);
-      for (const v of verteces) {
-        const v2 = this.verteces.indexOf(v);
-        this.connect(v1, v2);
-      }
-
-      this.expandable.splice(this.expandable.indexOf(vertex), 1);
-      this.expandable.push(...verteces);
+    this.insert(verteces);
+    const v1 = this.verteces.indexOf(vertex);
+    for (const v of verteces) {
+      const v2 = this.verteces.indexOf(v);
+      this.connect(v1, v2);
     }
+
+    this.expandable.push(...verteces);
   }
 }
 

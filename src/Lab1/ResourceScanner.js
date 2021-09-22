@@ -3,7 +3,7 @@
 const GUI = require('./GUI.js');
 
 const gui = new GUI();
-let logging, memory;
+let logging, memory, depth;
 process.on('message', msg => {
   if (msg.name === 'start') {
     gui.clear();
@@ -12,7 +12,11 @@ process.on('message', msg => {
       gui.sendMessage(msg.initialState);
 
       if (memory) {
-        gui.sendMessage(memory.rss / 1000000 + 'Mb');
+        gui.sendMessage('Memory: ' + memory / 1000 + 'Mb');
+      }
+
+      if (depth) {
+        gui.sendMessage('Depth: ' + depth);
       }
     };
     gui.addElementCallback(guiCallback);
@@ -28,10 +32,14 @@ process.on('message', msg => {
     console.timeEnd('Solution');
     gui.addElementCallback(() => {
       gui.sendMessage('Solution found!');
-      console.dir(msg.data.data.state, { depth: null });
+      gui.sendMessage(msg.data);
     });
     process.exit();
-  } else if (msg.name === 'memory') {
-    memory = msg.data;
+  } else if (msg.name === 'error') {
+    gui.sendError(msg.data);
+    process.exit();
+  } else if (msg.name === 'data') {
+    memory = msg.data.memory;
+    depth = msg.data.depth;
   }
 });
