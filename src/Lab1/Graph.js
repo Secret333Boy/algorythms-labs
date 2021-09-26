@@ -57,9 +57,19 @@ class Graph {
     }
   }
 
+  remove(obj) {
+    this.#delete(obj);
+  }
+
   #add(obj) {
     this.verteces.push(Vertex.isVertex(obj) ? obj : new Vertex(obj));
     this.matrix.pushRow().pushCol();
+  }
+
+  #delete(obj) {
+    const index = this.verteces.indexOf(obj);
+    this.verteces.splice(index, 1);
+    this.matrix.removeRow(index).removeCol(index);
   }
 }
 

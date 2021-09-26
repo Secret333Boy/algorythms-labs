@@ -37,6 +37,18 @@ class Matrix {
     return this;
   }
 
+  removeRow(index) {
+    this.arr.splice(index, 1);
+    return this;
+  }
+
+  removeCol(index) {
+    for (const i in this.arr) {
+      this.arr[i].splice(index, 1);
+    }
+    return this;
+  }
+
   pushCol(col = []) {
     for (const i in this.arr) {
       this.arr[i].push(col[i] || null);

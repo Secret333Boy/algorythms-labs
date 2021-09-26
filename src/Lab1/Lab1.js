@@ -4,7 +4,11 @@ const Puzzle = require('./Puzzle.js');
 const { fork } = require('child_process');
 class Lab1 {
   start() {
-    const puzzle = new Puzzle();
+    const puzzle = new Puzzle([
+      [2, 3, 6],
+      [1, 5, null],
+      [4, 7, 8],
+    ]);
 
     const child = fork(__dirname + '/ResourceScanner.js');
     child.send({
@@ -13,7 +17,7 @@ class Lab1 {
       debug: false,
     });
     puzzle
-      .findSolution(child)
+      .findSolutionBFS(child)
       .then(vertex => {
         const res = [];
         while (vertex.data.chosenChange) {

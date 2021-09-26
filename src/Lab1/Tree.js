@@ -21,6 +21,20 @@ class Tree extends Graph {
 
     this.expandable.push(...verteces);
   }
+
+  cut(vertex) {
+    const parent = vertex.data.parent;
+    if (Vertex.isVertex(parent)) {
+      const v1 = this.verteces.indexOf(parent);
+      const v2 = this.verteces.indexOf(vertex);
+      this.disconnect(v1, v2);
+      this.remove(vertex);
+    } else {
+      throw new Error('Vertex must have parent in data object');
+    }
+
+    return vertex;
+  }
 }
 
 module.exports = Tree;

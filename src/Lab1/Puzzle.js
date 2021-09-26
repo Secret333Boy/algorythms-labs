@@ -24,10 +24,11 @@ class Puzzle {
     return new State(arr);
   }
 
-  findSolution(logger) {
+  findSolutionBFS(logger) {
     return new Promise((resolve, reject) => {
       process.on('uncaughtException', e => {
         logger.send({ name: 'error', data: e });
+        process.exit(500);
       });
 
       const rootNode = new Vertex({

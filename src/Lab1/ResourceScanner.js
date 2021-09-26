@@ -29,9 +29,9 @@ process.on('message', msg => {
     console.time('Solution');
   } else if (msg.name === 'end') {
     gui.removeElementCallback(logging);
-    console.timeEnd('Solution');
     gui.addElementCallback(() => {
       gui.sendMessage('Solution found!');
+      console.timeEnd('Solution');
       gui.sendMessage(msg.data);
     });
     process.exit();
