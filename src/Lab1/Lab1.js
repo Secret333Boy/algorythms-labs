@@ -5,9 +5,9 @@ const { fork } = require('child_process');
 class Lab1 {
   start() {
     const puzzle = new Puzzle([
-      [2, 3, 6],
-      [4, 1, 5],
-      [7, null, 8],
+      [5, 1, null],
+      [6, 3, 2],
+      [4, 7, 8],
     ]);
 
     const child = fork(__dirname + '/ResourceScanner.js');
@@ -18,16 +18,18 @@ class Lab1 {
     });
     puzzle
       .findSolutionRBFS(child)
-      .then(vertex => {
+      .then(([vertex]) => {
         const res = [];
         while (vertex.data.chosenChange) {
           res.unshift(vertex.data.chosenChange);
           vertex = vertex.data.parent;
         }
 
+        // console.log(res.join('->'));
         child.send({ name: 'end', data: res.join('->') });
       })
       .catch(reason => {
+        // console.error(reason);
         child.send({ name: 'error', data: reason.toString() });
       });
   }

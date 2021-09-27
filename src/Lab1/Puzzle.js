@@ -91,6 +91,7 @@ class Puzzle {
         chosenChange: null,
         parent: null,
         depth: 0,
+        f: this.state.h,
       });
       const tree = new Tree(rootNode);
       const open = new PriorityQueue(rootNode, Infinity, true);
@@ -98,7 +99,7 @@ class Puzzle {
       const rbfs = (parent, fLimit) => {
         const parentState = parent.data.state;
         if (parentState.matrix.isEqual(new Matrix(Puzzle.solutionTemplate))) {
-          return parent;
+          return [parent, false];
         }
 
         for (const possibleChange of parentState.possibleChanges) {
@@ -108,7 +109,7 @@ class Puzzle {
             chosenChange: possibleChange,
             parent,
             depth: parent.data.depth + 1,
-            f: parent.data.depth + 1 + newState.h,
+            f: Math.max(parent.data.depth + 1 + newState.h, parent.data.f),
           });
 
           tree.expand(parent, newVertex);
@@ -117,21 +118,32 @@ class Puzzle {
 
         if (open.length === 0) reject('No open verteces left');
 
-        const best = open.pop();
-        if (best.data.f > fLimit) reject('Best f > fLimit');
+        while (true) {
+          const best = open.pop();
+          if (best.data.f > fLimit) {
+            return [false, best.data.f];
+          }
 
-        if (logger) {
-          logger.send({
-            name: 'data',
-            data: {
-              memory: process.resourceUsage().maxRSS,
-              depth: parent.data.depth,
-            },
-          });
+          if (logger) {
+            logger.send({
+              name: 'data',
+              data: {
+                memory: process.resourceUsage().maxRSS,
+                depth: parent.data.depth,
+              },
+            });
+          }
+
+          const alternative = open.head.data.data.f;
+
+          let result = false;
+          [result, best.data.f] = rbfs(best, Math.min(fLimit, alternative));
+          open.push(best, best.data.f);
+
+          if (result) {
+            return [result, false];
+          }
         }
-
-        const alternative = open.head.data.f;
-        return rbfs(best, Math.min(fLimit, alternative));
       };
 
       resolve(rbfs(rootNode, Infinity));
