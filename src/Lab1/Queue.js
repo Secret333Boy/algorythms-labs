@@ -11,7 +11,7 @@ class Queue {
       next() {
         const res = {
           done: this.done,
-          value: this.current?.data,
+          value: this.current,
         };
         this.current = this.current?.nextNode;
         this.done = !this.current;
@@ -41,6 +41,19 @@ class Queue {
     while (this.head) {
       this.pop();
     }
+  }
+
+  toArray() {
+    const res = [];
+
+    for (const data of this) {
+      res.push(data);
+    }
+    return res;
+  }
+
+  get length() {
+    return this.toArray().length;
   }
 }
 

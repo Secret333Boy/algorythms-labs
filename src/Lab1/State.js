@@ -65,6 +65,18 @@ class State {
     return State.possible[y][x];
   }
 
+  get h() {
+    let res = 0;
+
+    for (const i in this.matrix.arr) {
+      for (const j in this.matrix.arr[i]) {
+        if (State.GoalState[i][j] !== this.matrix.arr[i][j]) res++;
+      }
+    }
+
+    return res;
+  }
+
   static possible = [
     [
       ['t', 'l'],
@@ -81,6 +93,12 @@ class State {
       ['b', 'l', 'r'],
       ['b', 'r'],
     ],
+  ];
+
+  static GoalState = [
+    [1, 2, 3],
+    [4, 5, 6],
+    [7, 8, null],
   ];
 }
 

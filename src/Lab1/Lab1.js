@@ -6,8 +6,8 @@ class Lab1 {
   start() {
     const puzzle = new Puzzle([
       [2, 3, 6],
-      [1, 5, null],
-      [4, 7, 8],
+      [4, 1, 5],
+      [7, null, 8],
     ]);
 
     const child = fork(__dirname + '/ResourceScanner.js');
@@ -17,7 +17,7 @@ class Lab1 {
       debug: false,
     });
     puzzle
-      .findSolutionBFS(child)
+      .findSolutionRBFS(child)
       .then(vertex => {
         const res = [];
         while (vertex.data.chosenChange) {
@@ -28,7 +28,7 @@ class Lab1 {
         child.send({ name: 'end', data: res.join('->') });
       })
       .catch(reason => {
-        child.send({ name: 'error', data: reason });
+        child.send({ name: 'error', data: reason.toString() });
       });
   }
 }

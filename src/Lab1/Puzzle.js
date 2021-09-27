@@ -5,6 +5,7 @@ const Matrix = require('./Matrix.js');
 const Tree = require('./Tree.js');
 const shuffle = require('./shuffle.js');
 const Vertex = require('./Vertex.js');
+const PriorityQueue = require('./PriorityQueue.js');
 
 class Puzzle {
   constructor(initialState = false) {
@@ -26,11 +27,6 @@ class Puzzle {
 
   findSolutionBFS(logger) {
     return new Promise((resolve, reject) => {
-      process.on('uncaughtException', e => {
-        logger.send({ name: 'error', data: e });
-        process.exit(500);
-      });
-
       const rootNode = new Vertex({
         state: this.state,
         chosenChange: null,
@@ -75,22 +71,74 @@ class Puzzle {
           reject('Expandable is empty');
         }
 
-        logger.send({
-          name: 'data',
-          data: {
-            memory: process.resourceUsage().maxRSS,
-            depth: parent.data.depth,
-          },
-        });
+        if (logger) {
+          logger.send({
+            name: 'data',
+            data: {
+              memory: process.resourceUsage().maxRSS,
+              depth: parent.data.depth,
+            },
+          });
+        }
       }
     });
   }
 
-  static solutionTemplate = [
-    [1, 2, 3],
-    [4, 5, 6],
-    [7, 8, null],
-  ];
+  findSolutionRBFS(logger) {
+    return new Promise((resolve, reject) => {
+      const rootNode = new Vertex({
+        state: this.state,
+        chosenChange: null,
+        parent: null,
+        depth: 0,
+      });
+      const tree = new Tree(rootNode);
+      const open = new PriorityQueue(rootNode, Infinity, true);
+
+      const rbfs = (parent, fLimit) => {
+        const parentState = parent.data.state;
+        if (parentState.matrix.isEqual(new Matrix(Puzzle.solutionTemplate))) {
+          return parent;
+        }
+
+        for (const possibleChange of parentState.possibleChanges) {
+          const newState = parentState.changeState(possibleChange);
+          const newVertex = new Vertex({
+            state: newState,
+            chosenChange: possibleChange,
+            parent,
+            depth: parent.data.depth + 1,
+            f: parent.data.depth + 1 + newState.h,
+          });
+
+          tree.expand(parent, newVertex);
+          open.push(newVertex, newVertex.data.f);
+        }
+
+        if (open.length === 0) reject('No open verteces left');
+
+        const best = open.pop();
+        if (best.data.f > fLimit) reject('Best f > fLimit');
+
+        if (logger) {
+          logger.send({
+            name: 'data',
+            data: {
+              memory: process.resourceUsage().maxRSS,
+              depth: parent.data.depth,
+            },
+          });
+        }
+
+        const alternative = open.head.data.f;
+        return rbfs(best, Math.min(fLimit, alternative));
+      };
+
+      resolve(rbfs(rootNode, Infinity));
+    });
+  }
+
+  static solutionTemplate = State.GoalState;
 }
 
 module.exports = Puzzle;
