@@ -8,7 +8,6 @@ class Tree extends Graph {
   constructor(obj) {
     const vertex = Vertex.isVertex(obj) ? obj : new Vertex(obj);
     super([vertex], new Matrix([[0]]));
-    this.expandable = [vertex];
   }
 
   expand(vertex, ...verteces) {
@@ -18,8 +17,6 @@ class Tree extends Graph {
       const v2 = this.verteces.indexOf(v);
       this.connect(v1, v2);
     }
-
-    this.expandable.push(...verteces);
   }
 
   cut(vertex) {

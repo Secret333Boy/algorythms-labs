@@ -35,9 +35,10 @@ class Puzzle {
       });
       const tree = new Tree(rootNode);
 
+      const open = [rootNode];
       const closed = [];
       while (true) {
-        const parent = tree.expandable.shift();
+        const parent = open.shift();
         const parentState = parent.data.state;
 
         if (parentState.matrix.isEqual(new Matrix(Puzzle.solutionTemplate))) {
@@ -63,11 +64,11 @@ class Puzzle {
 
         if (newVerteces.length !== 0) {
           tree.expand(parent, ...newVerteces);
-          tree.expandable.push(...newVerteces);
+          open.push(...newVerteces);
         }
         closed.push(parentState.matrix.toString());
 
-        if (tree.expandable.length === 0) {
+        if (open.length === 0) {
           reject('Expandable is empty');
         }
 
