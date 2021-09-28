@@ -24,6 +24,11 @@ class Tree extends Graph {
     if (Vertex.isVertex(parent)) {
       const v1 = this.verteces.indexOf(parent);
       const v2 = this.verteces.indexOf(vertex);
+      if (vertex.links.size !== 0) {
+        for (const child of vertex.links.values()) {
+          this.cut(child);
+        }
+      }
       this.disconnect(v1, v2);
       this.remove(vertex);
     } else {
