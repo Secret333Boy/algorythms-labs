@@ -98,6 +98,10 @@ class Puzzle {
       const open = new PriorityQueue(rootNode, Infinity, true);
 
       const rbfs = (parent, fLimit) => {
+        if (!tree.verteces.includes(parent)) {
+          return [false, false];
+        }
+
         const parentState = parent.data.state;
         if (parentState.matrix.isEqual(new Matrix(Puzzle.solutionTemplate))) {
           return [parent, false];
@@ -139,8 +143,12 @@ class Puzzle {
 
           let result = false;
           [result, best.data.f] = rbfs(best, Math.min(fLimit, alternative));
-          open.push(best, best.data.f);
-
+          if (best.data.f) {
+            open.push(best, best.data.f);
+            for (const child of best.links.values()) {
+              tree.cut(child);
+            }
+          }
           if (result) {
             return [result, false];
           }

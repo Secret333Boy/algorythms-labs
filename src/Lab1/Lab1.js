@@ -5,8 +5,8 @@ const { fork } = require('child_process');
 class Lab1 {
   start() {
     const puzzle = new Puzzle([
-      [2, 6, 5],
-      [1, 3, 8],
+      [5, 1, 2],
+      [6, 3, 8],
       [null, 4, 7],
     ]);
 
@@ -19,7 +19,7 @@ class Lab1 {
       debug: false,
     });
     puzzle
-      .findSolutionBFS(child)
+      .findSolutionRBFS(child)
       .then(data => {
         let vertex = Array.isArray(data) ? data[0] : data;
         const res = [];
