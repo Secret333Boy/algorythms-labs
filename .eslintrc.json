@@ -20,6 +20,6 @@
   },
   "rules": {
     "prettier/prettier": "error",
-    "sonarjs/cognitive-complexity": ["always", 20]
+    "sonarjs/cognitive-complexity": ["off"]
   }
 }
