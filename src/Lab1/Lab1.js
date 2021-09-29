@@ -2,13 +2,10 @@
 
 const Puzzle = require('./Puzzle.js');
 const { fork } = require('child_process');
+const examples = require('./initialStatesExamples/examples.js');
 class Lab1 {
   start() {
-    const puzzle = new Puzzle([
-      [5, 1, 2],
-      [6, 3, 8],
-      [null, 4, 7],
-    ]);
+    const puzzle = new Puzzle(examples[5]);
 
     // const puzzle = new Puzzle();
 
