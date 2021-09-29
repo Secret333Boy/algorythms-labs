@@ -139,7 +139,11 @@ class Puzzle {
             });
           }
 
-          const alternative = open.head.data.data.f;
+          let pointer = open.head;
+          while (pointer && pointer.priority <= best.data.f) {
+            pointer = pointer.nextNode;
+          }
+          const alternative = pointer?.priority || open.head.data.data.f;
 
           let result = false;
           [result, best.data.f] = rbfs(best, Math.min(fLimit, alternative));
