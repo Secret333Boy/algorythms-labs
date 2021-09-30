@@ -26,6 +26,10 @@ class Puzzle {
   }
 
   findSolutionBFS(logger) {
+    setTimeout(() => {
+      logger.send({ name: 'error', data: 'Time limit exeeded' });
+      process.exit();
+    }, 1000 * 60 * 30);
     return new Promise((resolve, reject) => {
       const rootNode = new Vertex({
         state: this.state,
@@ -73,6 +77,10 @@ class Puzzle {
         }
 
         if (logger) {
+          if (process.resourceUsage().maxRSS / 1000 > 512) {
+            logger.send({ name: 'error', data: 'Maximum heap size exeeded' });
+            process.exit();
+          }
           logger.send({
             name: 'data',
             data: {
@@ -86,6 +94,10 @@ class Puzzle {
   }
 
   findSolutionRBFS(logger) {
+    setTimeout(() => {
+      logger.send({ name: 'error', data: 'Time limit exeeded' });
+      process.exit();
+    }, 1000 * 60 * 30);
     return new Promise((resolve, reject) => {
       const rootNode = new Vertex({
         state: this.state,
@@ -130,6 +142,11 @@ class Puzzle {
           }
 
           if (logger) {
+            if (process.resourceUsage().maxRSS / 1000 > 512) {
+              logger.send({ name: 'error', data: 'Maximum heap size exeeded' });
+              process.exit();
+            }
+
             logger.send({
               name: 'data',
               data: {
