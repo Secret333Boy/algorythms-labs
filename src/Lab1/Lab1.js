@@ -5,7 +5,7 @@ const { fork } = require('child_process');
 const examples = require('./initialStatesExamples/examples.js');
 class Lab1 {
   start() {
-    const puzzle = new Puzzle(examples[4]);
+    const puzzle = new Puzzle(examples[19]);
 
     // const puzzle = new Puzzle();
 
@@ -16,7 +16,7 @@ class Lab1 {
       debug: false,
     });
     puzzle
-      .findSolutionBFS(child)
+      .findSolutionRBFS(child)
       .then(data => {
         let vertex = Array.isArray(data) ? data[0] : data;
         const res = [];
