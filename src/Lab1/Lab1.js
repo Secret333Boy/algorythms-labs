@@ -16,7 +16,7 @@ class Lab1 {
       debug: false,
     });
     puzzle
-      .findSolutionRBFS(child)
+      .findSolutionBFS(child)
       .then(data => {
         let vertex = Array.isArray(data) ? data[0] : data;
         const res = [];
