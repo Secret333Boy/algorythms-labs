@@ -155,6 +155,10 @@ class Matrix {
     return this.arr.length;
   }
 
+  get length() {
+    return this.xLength * this.yLength;
+  }
+
   get rows() {
     return this.arr;
   }

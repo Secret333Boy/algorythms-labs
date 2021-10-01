@@ -25,7 +25,7 @@ class Puzzle {
     return new State(arr);
   }
 
-  findSolutionBFS(logger) {
+  findSolutionBFS(logger, ...counters) {
     setTimeout(() => {
       logger.send({ name: 'error', data: 'Time limit exeeded' });
       process.exit();
@@ -46,7 +46,6 @@ class Puzzle {
         const parentState = parent.data.state;
 
         if (parentState.matrix.isEqual(new Matrix(Puzzle.solutionTemplate))) {
-          console.log(parentState.printState());
           resolve(parent);
           break;
         }
@@ -89,11 +88,21 @@ class Puzzle {
             },
           });
         }
+
+        for (const counter of counters) {
+          if (counter.name === 'iterations') {
+            counter.increment();
+          } else if (counter.name === 'totalStates') {
+            counter.c += newVerteces.length;
+          } else if (counter.name === 'totalStatesInMemory') {
+            counter.c = tree.matrix.xLength;
+          }
+        }
       }
     });
   }
 
-  findSolutionRBFS(logger) {
+  findSolutionRBFS(logger, ...counters) {
     setTimeout(() => {
       logger.send({ name: 'error', data: 'Time limit exeeded' });
       process.exit();
@@ -131,6 +140,16 @@ class Puzzle {
 
           tree.expand(parent, newVertex);
           open.push(newVertex, newVertex.data.f);
+        }
+
+        for (const counter of counters) {
+          if (counter.name === 'iterations') {
+            counter.increment();
+          } else if (counter.name === 'totalStates') {
+            counter.c += parent.links.size;
+          } else if (counter.name === 'totalStatesInMemory') {
+            counter.c = tree.matrix.xLength;
+          }
         }
 
         if (open.length === 0) reject('No open verteces left');
