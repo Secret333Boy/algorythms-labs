@@ -19,6 +19,7 @@
     "BigInt": true
   },
   "rules": {
-    "prettier/prettier": "error"
+    "prettier/prettier": "error",
+    "sonarjs/cognitive-complexity": ["off"]
   }
 }
