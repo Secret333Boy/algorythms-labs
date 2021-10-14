@@ -2,9 +2,10 @@
 
 const labs = [];
 labs.push(require('./Lab1/Lab1.js'));
+labs.push(require('./Lab2/Lab2.js'));
 const stdinput = require('./stdinput.js');
 
-console.log('What lab do you want to execute? [1]');
+console.log('What lab do you want to execute? [1, 2]');
 
 stdinput().then(line => {
   const num = +line;
