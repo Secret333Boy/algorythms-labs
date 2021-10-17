@@ -1,7 +1,22 @@
 'use strict';
 
-const Tree = require('./Tree.js');
+const BNode = require('./BNode.js');
 
-class BTree extends Tree {}
+class BTree {
+  constructor(t, rootData = null) {
+    this.t = t;
+    this.root = [new BNode(rootData)];
+  }
+
+  find() {}
+
+  insert() {}
+
+  remove() {}
+
+  static isBTree(obj) {
+    return obj instanceof BTree;
+  }
+}
 
 module.exports = BTree;

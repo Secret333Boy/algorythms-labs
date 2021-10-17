@@ -1,8 +1,13 @@
 'use strict';
 
+const BTree = require('./BTree.js');
+
 class Lab2 {
   start() {
-    console.log('Lab2 started');
+    const t = 50;
+
+    const btree = new BTree(t);
+    btree.insert(10);
   }
 }
 

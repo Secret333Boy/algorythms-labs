@@ -6,6 +6,10 @@ class BNode {
     this.left = null;
     this.right = null;
   }
+
+  static isBNode(obj) {
+    return obj instanceof BNode;
+  }
 }
 
 module.exports = BNode;
