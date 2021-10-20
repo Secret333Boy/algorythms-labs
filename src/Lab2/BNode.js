@@ -1,7 +1,7 @@
 'use strict';
 
 class BNode {
-  constructor(...data) {
+  constructor(data) {
     this.data = data;
     this.left = null;
     this.right = null;
