@@ -8,7 +8,50 @@ class BTree {
     this.root = [new BNode(rootData)];
   }
 
-  find() {}
+  find(key) {
+    let node = this.root;
+    while (true) {
+      let leftP = 0;
+      let rightP = node.length - 1;
+
+      while (true) {
+        if (Math.abs(leftP - rightP) === 1 || leftP === rightP) {
+          if (node[leftP].data === key) return node[leftP];
+          if (node[rightP].data === key) return node[rightP];
+
+          break;
+        }
+        const middleP = Math.floor((rightP - leftP) / 2);
+        const middle = node[middleP];
+
+        if (key === middle.data) {
+          return middle;
+        } else if (key < middle.data) {
+          rightP = middleP;
+        } else {
+          leftP = middleP;
+        }
+      }
+
+      if (!this.#isLeaf(node)) {
+        for (let i = 0; i < node.length; i++) {
+          const currBNode = node[i];
+          const nextBnode = node[i + 1];
+
+          if (i === 0 && key <= currBNode.data) {
+            node = currBNode.left;
+            break;
+          }
+          if (!nextBnode || (key >= currBNode.data && key <= nextBnode.data)) {
+            node = currBNode.right;
+            break;
+          }
+        }
+      } else {
+        return false;
+      }
+    }
+  }
 
   insert(k, node = this.root, prevNode = null) {
     if (this.root[0].data === null) {
@@ -19,11 +62,13 @@ class BTree {
     if (!this.#isLeaf(node)) {
       for (let i = 0; i < node.length; i++) {
         const currBNode = node[i];
+        const nextBnode = node[i + 1];
 
-        if (i === 0 && k <= currBNode.left[currBNode.left.length - 1]) {
+        if (i === 0 && k <= currBNode.data) {
           this.insert(k, currBNode.left, node);
           break;
-        } else if (k >= currBNode.right[0].data) {
+        }
+        if (!nextBnode || (k >= currBNode.data && k <= nextBnode.data)) {
           this.insert(k, currBNode.right, node);
           break;
         }

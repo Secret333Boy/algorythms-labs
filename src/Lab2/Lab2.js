@@ -19,6 +19,11 @@ class Lab2 {
       .insert(16)
       .insert(51);
     console.dir(btree, { depth: null });
+    console.log(btree.find(51));
+    console.log(btree.find(8));
+    console.log(btree.find(0));
+    console.log(btree.find(15));
+    console.log(btree.find(7));
   }
 }
 
