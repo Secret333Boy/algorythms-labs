@@ -112,6 +112,9 @@ class BTree {
   }
 
   remove(key, node = this.root, prevNode = null) {
+    if (key === 13) {
+      console.log('asdasd');
+    }
     let leftP = 0;
     let rightP = node.length - 1;
 
@@ -150,37 +153,20 @@ class BTree {
     } else if (bnode) {
       const leftNode = bnode.left;
       const rightNode = bnode.right;
-      if (leftNode.length >= this.t) {
-        const swapBNode = leftNode[leftNode.length - 1];
 
-        node.splice(index, 1);
-        leftNode.splice(leftNode.length - 1, 1);
+      let rightLeaf = bnode.right;
+      while (true) {
+        if (rightLeaf[0].left === null) break;
+        rightLeaf = rightLeaf[0].left;
+      }
 
-        leftNode.push(bnode);
-        node.splice(index, 0, swapBNode);
+      let leftLeaf = bnode.left;
+      while (true) {
+        if (leftLeaf[leftLeaf.length - 1].right === null) break;
+        leftLeaf = leftLeaf[leftLeaf.length - 1].right;
+      }
 
-        const buf = { left: bnode.left, right: bnode.right };
-        bnode.left = swapBNode.left;
-        bnode.right = swapBNode.right;
-        swapBNode.left = buf.left;
-        swapBNode.right = buf.right;
-        result = this.remove(key, swapBNode.left, node);
-      } else if (rightNode.length >= this.t) {
-        const swapBNode = rightNode[0];
-
-        node.splice(index, 1);
-        rightNode.splice(0, 1);
-
-        rightNode.unshift(bnode);
-        node.splice(index, 0, swapBNode);
-
-        const buf = { left: bnode.left, right: bnode.right };
-        bnode.left = swapBNode.left;
-        bnode.right = swapBNode.right;
-        swapBNode.left = buf.left;
-        swapBNode.right = buf.right;
-        result = this.remove(key, swapBNode.right, node);
-      } else if (
+      if (
         leftNode.length === this.t - 1 &&
         rightNode.length === leftNode.length
       ) {
@@ -189,12 +175,43 @@ class BTree {
 
         node.splice(index, 1);
 
-        const newNode = bnode.left.concat([bnode]).concat(bnode.right);
+        let newNode = bnode.left.concat([bnode]).concat(bnode.right);
         bnode.left = newNode[newNode.indexOf(bnode) - 1].right || null;
         bnode.right = newNode[newNode.indexOf(bnode) + 1].left || null;
         if (prevBNode) prevBNode.right = newNode;
         if (nextBNode) nextBNode.left = newNode;
+        if (node.length === 0) {
+          node.push(...newNode);
+          newNode = node;
+        }
         result = this.remove(key, newNode, node);
+      } else if (leftLeaf.length >= this.t) {
+        const swapBNode = leftLeaf.pop();
+
+        node.splice(index, 1);
+        leftLeaf.push(bnode);
+        node.splice(index, 0, swapBNode);
+
+        const buf = { left: bnode.left, right: bnode.right };
+        bnode.left = swapBNode.left;
+        bnode.right = swapBNode.right;
+        swapBNode.left = buf.left;
+        swapBNode.right = buf.right;
+        result = this.remove(key, swapBNode.left, node);
+      } else if (rightLeaf.length >= this.t) {
+        const swapBNode = rightLeaf.shift();
+
+        node.splice(index, 1);
+
+        rightLeaf.unshift(bnode);
+        node.splice(index, 0, swapBNode);
+
+        const buf = { left: bnode.left, right: bnode.right };
+        bnode.left = swapBNode.left;
+        bnode.right = swapBNode.right;
+        swapBNode.left = buf.left;
+        swapBNode.right = buf.right;
+        result = this.remove(key, swapBNode.right, node);
       }
     } else {
       for (let i = 0; i < node.length; i++) {
@@ -212,7 +229,7 @@ class BTree {
       }
     }
 
-    if (prevNode && node.length < this.t - 1) {
+    if (prevNode && node.length <= this.t - 1) {
       let parentBNode = null;
       for (const bnode of prevNode) {
         if (bnode.left === node || bnode.right === node) {
@@ -230,8 +247,8 @@ class BTree {
         node.push(parentBNode);
         const buf = { left: parentBNode.left, right: parentBNode.right };
 
-        parentBNode.left = node[node.length - 2].right;
-        parentBNode.right = swapBNode.left;
+        parentBNode.left = node[node.length - 2]?.right || null;
+        parentBNode.right = swapBNode.left || null;
 
         swapBNode.left = buf.left;
         swapBNode.right = buf.right;
@@ -244,7 +261,7 @@ class BTree {
         swapBNode = parentBNode.left.pop();
 
         prevNode.splice(parentIndex, 1);
-        node.push(parentBNode);
+        node.unshift(parentBNode);
         const buf = { left: parentBNode.left, right: parentBNode.right };
 
         parentBNode.left = swapBNode.right;
@@ -267,10 +284,12 @@ class BTree {
         const newNode = parentBNode.left
           .concat([parentBNode])
           .concat(parentBNode.right);
-        parentBNode.left = parentBNode.left[parentBNode.left.length - 1].right;
-        parentBNode.right = parentBNode.right[0].left;
+        parentBNode.left =
+          parentBNode.left[parentBNode.left.length - 1]?.right || null;
+        parentBNode.right = parentBNode.right[0]?.left || null;
         if (prevBNode) prevBNode.right = newNode;
         if (nextBNode) nextBNode.left = newNode;
+        if (prevNode.length === 0) prevNode.push(...newNode);
         if (this.root.length === 0) this.root = newNode;
       } else {
         result = false;

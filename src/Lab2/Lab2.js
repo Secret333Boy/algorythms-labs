@@ -5,7 +5,7 @@ const keys = require('./keys.js');
 
 class Lab2 {
   start() {
-    const t = 3;
+    const t = 2;
 
     const btree = new BTree(t);
     for (const key of keys) {
