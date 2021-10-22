@@ -3,12 +3,13 @@
 const BNode = require('./BNode.js');
 
 class BTree {
-  constructor(t, rootData = null) {
+  constructor(t, key, rootData = null) {
     this.t = t;
-    this.root = [new BNode(rootData)];
+    this.root = key ? [new BNode(key, rootData)] : [];
   }
 
   find(key) {
+    if (this.root.length === 0) return false;
     let node = this.root;
     while (true) {
       let leftP = 0;
@@ -16,17 +17,17 @@ class BTree {
 
       while (true) {
         if (Math.abs(leftP - rightP) === 1 || leftP === rightP) {
-          if (node[leftP].data === key) return node[leftP];
-          if (node[rightP].data === key) return node[rightP];
+          if (node[leftP].key === key) return node[leftP];
+          if (node[rightP].key === key) return node[rightP];
 
           break;
         }
         const middleP = Math.floor((rightP + leftP) / 2);
         const middle = node[middleP];
 
-        if (key === middle.data) {
+        if (key === middle.key) {
           return middle;
-        } else if (key < middle.data) {
+        } else if (key < middle.key) {
           rightP = middleP;
         } else {
           leftP = middleP;
@@ -38,11 +39,11 @@ class BTree {
           const currBNode = node[i];
           const nextBnode = node[i + 1];
 
-          if (i === 0 && key <= currBNode.data) {
+          if (i === 0 && key <= currBNode.key) {
             node = currBNode.left;
             break;
           }
-          if (!nextBnode || (key >= currBNode.data && key <= nextBnode.data)) {
+          if (!nextBnode || (key >= currBNode.key && key <= nextBnode.key)) {
             node = currBNode.right;
             break;
           }
@@ -53,9 +54,9 @@ class BTree {
     }
   }
 
-  insert(k, node = this.root, prevNode = null) {
-    if (this.root[0].data === null) {
-      this.root[0].data = k;
+  insert(key, data, node = this.root, prevNode = null) {
+    if (this.root.length === 0) {
+      this.root.push(new BNode(key, data));
       return this;
     }
 
@@ -64,21 +65,21 @@ class BTree {
         const currBNode = node[i];
         const nextBnode = node[i + 1];
 
-        if (i === 0 && k <= currBNode.data) {
-          this.insert(k, currBNode.left, node);
+        if (i === 0 && key <= currBNode.key) {
+          this.insert(key, data, currBNode.left, node);
           break;
         }
-        if (!nextBnode || (k >= currBNode.data && k <= nextBnode.data)) {
-          this.insert(k, currBNode.right, node);
+        if (!nextBnode || (key >= currBNode.key && key <= nextBnode.key)) {
+          this.insert(key, data, currBNode.right, node);
           break;
         }
       }
     } else {
       let i = 0;
-      while (i < node.length && k > node[i].data) {
+      while (i < node.length && key > node[i].key) {
         i++;
       }
-      node.splice(i, 0, new BNode(k));
+      node.splice(i, 0, new BNode(key, data));
     }
 
     if (node.length === 2 * this.t - 1) {
@@ -93,7 +94,7 @@ class BTree {
         this.root = middleNode;
       } else {
         let i = 0;
-        while (i < prevNode.length && k > prevNode[i].data) {
+        while (i < prevNode.length && key > prevNode[i].key) {
           i++;
         }
         prevNode.splice(i, 0, middleItem);
@@ -118,10 +119,10 @@ class BTree {
     let bnode = null;
     while (true) {
       if (Math.abs(leftP - rightP) === 1 || leftP === rightP) {
-        if (node[leftP].data === key) {
+        if (node[leftP].key === key) {
           bnode = node[leftP];
         }
-        if (node[rightP].data === key) {
+        if (node[rightP].key === key) {
           bnode = node[rightP];
         }
 
@@ -130,10 +131,10 @@ class BTree {
       const middleP = Math.floor((rightP + leftP) / 2);
       const middle = node[middleP];
 
-      if (key === middle.data) {
+      if (key === middle.key) {
         bnode = middle;
         break;
-      } else if (key < middle.data) {
+      } else if (key < middle.key) {
         rightP = middleP;
       } else {
         leftP = middleP;
@@ -144,7 +145,6 @@ class BTree {
     let result = false;
     if (bnode && !(bnode.left || bnode.right)) {
       if (index >= 0) {
-        console.log('DELETED: ' + key);
         node.splice(index, 1);
       }
     } else if (bnode) {
@@ -215,11 +215,11 @@ class BTree {
         const currBNode = node[i];
         const nextBnode = node[i + 1];
 
-        if (i === 0 && key <= currBNode.data) {
+        if (i === 0 && key <= currBNode.key) {
           result = this.remove(key, currBNode.left, node);
           break;
         }
-        if (!nextBnode || (key >= currBNode.data && key <= nextBnode.data)) {
+        if (!nextBnode || (key >= currBNode.key && key <= nextBnode.key)) {
           result = this.remove(key, currBNode.right, node);
           break;
         }
