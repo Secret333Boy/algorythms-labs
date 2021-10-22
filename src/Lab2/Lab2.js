@@ -5,7 +5,7 @@ const keys = require('./keys.js');
 
 class Lab2 {
   start() {
-    const t = 2;
+    const t = 3;
 
     const btree = new BTree(t);
     for (const key of keys) {
@@ -19,16 +19,20 @@ class Lab2 {
       18, 21, 26,
     ];
     for (const key of removeKeys) {
+      let c = 0;
+      for (const key of keys) {
+        if (btree.find(key)) {
+          c++;
+        }
+      }
+      console.log(c);
       btree.remove(key);
+      console.log('=====');
     }
     console.dir(btree, { depth: null });
     console.log(
       'Allocated memory: ' + process.resourceUsage().maxRSS / 1000 + 'Mb'
     );
-
-    for (const key of keys) {
-      if (!removeKeys.includes(key)) console.log(`${key}: ${btree.find(key)}`);
-    }
   }
 }
 

@@ -112,9 +112,6 @@ class BTree {
   }
 
   remove(key, node = this.root, prevNode = null) {
-    if (key === 13) {
-      console.log('asdasd');
-    }
     let leftP = 0;
     let rightP = node.length - 1;
 
@@ -244,15 +241,15 @@ class BTree {
         swapBNode = parentBNode.right.shift();
 
         prevNode.splice(parentIndex, 1);
-        node.push(parentBNode);
         const buf = { left: parentBNode.left, right: parentBNode.right };
 
-        parentBNode.left = node[node.length - 2]?.right || null;
+        parentBNode.left = node[node.length - 1]?.right || null;
         parentBNode.right = swapBNode.left || null;
 
         swapBNode.left = buf.left;
         swapBNode.right = buf.right;
 
+        node.push(parentBNode);
         prevNode.splice(parentIndex, 0, swapBNode);
       } else if (
         parentBNode.right === node &&
