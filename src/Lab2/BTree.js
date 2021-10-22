@@ -21,7 +21,7 @@ class BTree {
 
           break;
         }
-        const middleP = Math.floor((rightP - leftP) / 2);
+        const middleP = Math.floor((rightP + leftP) / 2);
         const middle = node[middleP];
 
         if (key === middle.data) {
@@ -111,7 +111,173 @@ class BTree {
     return this;
   }
 
-  remove() {}
+  remove(key, node = this.root, prevNode = null) {
+    let leftP = 0;
+    let rightP = node.length - 1;
+
+    let bnode = null;
+    while (true) {
+      if (Math.abs(leftP - rightP) === 1 || leftP === rightP) {
+        if (node[leftP].data === key) {
+          bnode = node[leftP];
+        }
+        if (node[rightP].data === key) {
+          bnode = node[rightP];
+        }
+
+        break;
+      }
+      const middleP = Math.floor((rightP + leftP) / 2);
+      const middle = node[middleP];
+
+      if (key === middle.data) {
+        bnode = middle;
+        break;
+      } else if (key < middle.data) {
+        rightP = middleP;
+      } else {
+        leftP = middleP;
+      }
+    }
+
+    const index = node.indexOf(bnode);
+    let result = false;
+    if (bnode && !(bnode.left || bnode.right)) {
+      if (index >= 0) {
+        console.log('DELETED: ' + key);
+        node.splice(index, 1);
+      }
+    } else if (bnode) {
+      const leftNode = bnode.left;
+      const rightNode = bnode.right;
+      if (leftNode.length >= this.t) {
+        const swapBNode = leftNode[leftNode.length - 1];
+
+        node.splice(index, 1);
+        leftNode.splice(leftNode.length - 1, 1);
+
+        leftNode.push(bnode);
+        node.splice(index, 0, swapBNode);
+
+        const buf = { left: bnode.left, right: bnode.right };
+        bnode.left = swapBNode.left;
+        bnode.right = swapBNode.right;
+        swapBNode.left = buf.left;
+        swapBNode.right = buf.right;
+        result = this.remove(key, swapBNode.left, node);
+      } else if (rightNode.length >= this.t) {
+        const swapBNode = rightNode[0];
+
+        node.splice(index, 1);
+        rightNode.splice(0, 1);
+
+        rightNode.unshift(bnode);
+        node.splice(index, 0, swapBNode);
+
+        const buf = { left: bnode.left, right: bnode.right };
+        bnode.left = swapBNode.left;
+        bnode.right = swapBNode.right;
+        swapBNode.left = buf.left;
+        swapBNode.right = buf.right;
+        result = this.remove(key, swapBNode.right, node);
+      } else if (
+        leftNode.length === this.t - 1 &&
+        rightNode.length === leftNode.length
+      ) {
+        const prevBNode = node[index - 1];
+        const nextBNode = node[index + 1];
+
+        node.splice(index, 1);
+
+        const newNode = bnode.left.concat([bnode]).concat(bnode.right);
+        bnode.left = newNode[newNode.indexOf(bnode) - 1].right || null;
+        bnode.right = newNode[newNode.indexOf(bnode) + 1].left || null;
+        if (prevBNode) prevBNode.right = newNode;
+        if (nextBNode) nextBNode.left = newNode;
+        result = this.remove(key, newNode, node);
+      }
+    } else {
+      for (let i = 0; i < node.length; i++) {
+        const currBNode = node[i];
+        const nextBnode = node[i + 1];
+
+        if (i === 0 && key <= currBNode.data) {
+          result = this.remove(key, currBNode.left, node);
+          break;
+        }
+        if (!nextBnode || (key >= currBNode.data && key <= nextBnode.data)) {
+          result = this.remove(key, currBNode.right, node);
+          break;
+        }
+      }
+    }
+
+    if (prevNode && node.length < this.t - 1) {
+      let parentBNode = null;
+      for (const bnode of prevNode) {
+        if (bnode.left === node || bnode.right === node) {
+          parentBNode = bnode;
+          break;
+        }
+      }
+      const parentIndex = prevNode.indexOf(parentBNode);
+
+      let swapBNode = null;
+      if (parentBNode.left === node && parentBNode.right.length > this.t - 1) {
+        swapBNode = parentBNode.right.shift();
+
+        prevNode.splice(parentIndex, 1);
+        node.push(parentBNode);
+        const buf = { left: parentBNode.left, right: parentBNode.right };
+
+        parentBNode.left = node[node.length - 2].right;
+        parentBNode.right = swapBNode.left;
+
+        swapBNode.left = buf.left;
+        swapBNode.right = buf.right;
+
+        prevNode.splice(parentIndex, 0, swapBNode);
+      } else if (
+        parentBNode.right === node &&
+        parentBNode.left.length > this.t - 1
+      ) {
+        swapBNode = parentBNode.left.pop();
+
+        prevNode.splice(parentIndex, 1);
+        node.push(parentBNode);
+        const buf = { left: parentBNode.left, right: parentBNode.right };
+
+        parentBNode.left = swapBNode.right;
+        parentBNode.right = node[0].left;
+
+        swapBNode.left = buf.left;
+        swapBNode.right = buf.right;
+
+        prevNode.splice(parentIndex, 0, swapBNode);
+      } else if (
+        (parentBNode.left === node &&
+          parentBNode.right.length === this.t - 1) ||
+        (parentBNode.right === node && parentBNode.left.length === this.t - 1)
+      ) {
+        const prevBNode = prevNode[parentIndex - 1];
+        const nextBNode = prevNode[parentIndex + 1];
+
+        prevNode.splice(parentIndex, 1);
+
+        const newNode = parentBNode.left
+          .concat([parentBNode])
+          .concat(parentBNode.right);
+        parentBNode.left = parentBNode.left[parentBNode.left.length - 1].right;
+        parentBNode.right = parentBNode.right[0].left;
+        if (prevBNode) prevBNode.right = newNode;
+        if (nextBNode) nextBNode.left = newNode;
+        if (this.root.length === 0) this.root = newNode;
+      } else {
+        result = false;
+      }
+    }
+    return result;
+  }
 
   #isLeaf(arr) {
     let flag = true;
