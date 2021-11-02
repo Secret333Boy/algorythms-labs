@@ -1,16 +1,21 @@
 'use strict';
 const generateRandom = require('./generateRandom.js');
 const Population = require('./Population.js');
+const fs = require('fs');
 
 const P = 250;
 const initialPopulationCount = 100;
 const crossbreedingOperator = 0.25;
 const mutationProbability = 0.05;
-const iterations = 100000;
+const iterations = 1000;
 
 class Lab3 {
   start() {
     const population = new Population(P, initialPopulationCount);
+    fs.writeFileSync(
+      './log.log',
+      JSON.stringify(population.entities.map(el => el.items[0])) + '\n'
+    );
     let bestEntityEver = null;
     for (let i = 0; i < iterations; i++) {
       if (population.entities.length === 0) break;
@@ -32,6 +37,12 @@ class Lab3 {
         mutationProbability
       );
       population.killWorst();
+
+      if (i % 20 === 0)
+        fs.appendFileSync(
+          './log.log',
+          JSON.stringify(bestEntityEver.items) + '\n'
+        );
     }
     console.log('Population left: ' + population.entities.length);
     console.log('Value: ' + bestEntityEver.value);
