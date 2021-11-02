@@ -42,8 +42,6 @@ class Population {
       .map((el, i) => (el === 0 ? this.#mapping[i] : null))
       .filter(el => el !== null)
       .reduce((acc, el) => (acc.weight < el.weight ? acc : el));
-    // console.log(genes);
-    // console.log(lightWeightItemToAdd);
     genes[this.#mapping.indexOf(lightWeightItemToAdd)] = 1;
     if (new Entity(genes, this.#getItems(genes)).weight > this.maxWeight) {
       return false;
