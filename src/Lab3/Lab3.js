@@ -12,10 +12,7 @@ const iterations = 1000;
 class Lab3 {
   start() {
     const population = new Population(P, initialPopulationCount);
-    fs.writeFileSync(
-      './log.log',
-      JSON.stringify(population.entities.map(el => el.items[0])) + '\n'
-    );
+    fs.writeFileSync('./log.log', '');
     let bestEntityEver = null;
     for (let i = 0; i < iterations; i++) {
       if (population.entities.length === 0) break;
@@ -41,7 +38,14 @@ class Lab3 {
       if (i % 20 === 0)
         fs.appendFileSync(
           './log.log',
-          JSON.stringify(bestEntityEver.items) + '\n'
+          bestEntityEver.items
+            .map(el => el.value)
+            .reduce((acc, el) => acc + el) +
+            ' ' +
+            bestEntityEver.weight +
+            ' ' +
+            population.entities.length +
+            '\n'
         );
     }
     console.log('Population left: ' + population.entities.length);
