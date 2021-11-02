@@ -7,12 +7,14 @@ const reader = readline.createInterface({
   terminal: true,
 });
 
-const stdinput = () =>
+const stdinput = (close = false) =>
   new Promise(
     resolve => {
       reader.on('line', line => {
         resolve(line);
-        reader.close();
+        if (close) {
+          reader.close();
+        }
       });
     },
     reject => reject()
