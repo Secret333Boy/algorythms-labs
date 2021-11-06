@@ -71,19 +71,19 @@ class Population {
       flag = !flag;
     }
 
-    const possibleGene = this.#useImprovementOperator(newGenes);
+    const possibleGenes = this.#useImprovementOperator(newGenes);
 
-    if (!possibleGene) {
-      if (Math.random() < mutationProbability) {
-        const i = Math.round(generateRandom(0, itemsCount - 1));
-        const j = Math.round(generateRandom(0, itemsCount - 1));
+    if (possibleGenes) {
+      newGenes = possibleGenes;
+    }
 
-        const buf = newGenes[i];
-        newGenes[i] = newGenes[j];
-        newGenes[j] = buf;
-      }
-    } else {
-      newGenes = possibleGene;
+    if (Math.random() < mutationProbability) {
+      const i = Math.round(generateRandom(0, itemsCount - 1));
+      const j = Math.round(generateRandom(0, itemsCount - 1));
+
+      const buf = newGenes[i];
+      newGenes[i] = newGenes[j];
+      newGenes[j] = buf;
     }
 
     const newEntity = new Entity(newGenes, this.#getItems(newGenes));
