@@ -15,24 +15,24 @@ class Matrix {
 
     for (const row of arr) {
       while (row.length !== maxRowLength) {
-        row.push(null);
+        row.push(0);
       }
       res.push(row);
     }
     return res;
   }
 
-  getElement(x, y) {
+  getElement(y, x) {
     return this.arr[y][x];
   }
 
-  setElement(x, y, data) {
+  setElement(y, x, data) {
     this.arr[y][x] = data;
     return this;
   }
 
   pushRow(row = []) {
-    this.arr.push(row);
+    this.arr.push(row || 0);
     this.arr = this.#alignRows(this.arr);
     return this;
   }
@@ -51,7 +51,7 @@ class Matrix {
 
   pushCol(col = []) {
     for (const i in this.arr) {
-      this.arr[i].push(col[i]);
+      this.arr[i].push(col[i] || 0);
     }
     return this;
   }

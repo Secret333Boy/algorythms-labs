@@ -47,13 +47,9 @@ class Graph {
     this.verteces[v1].unlinkFrom(this.verteces[v2]);
   }
 
-  insert(obj) {
-    if (Array.isArray(obj)) {
-      for (const el of obj) {
-        this.#add(el);
-      }
-    } else {
-      this.#add(obj);
+  insert(...vertexes) {
+    for (const vertex of vertexes) {
+      this.#add(vertex);
     }
   }
 
@@ -61,6 +57,32 @@ class Graph {
     if (this.verteces.includes(obj)) {
       this.#delete(obj);
     }
+  }
+
+  subgraph(verteces = this.verteces) {
+    const newVerteces = verteces.map(el => new Vertex(el.data));
+    return new Graph(newVerteces, this.#matrixFromVerteces(verteces));
+  }
+
+  #matrixFromVerteces(verteces) {
+    const newMatrix = new Matrix();
+    for (const vertex of verteces) {
+      const i = this.verteces.indexOf(vertex);
+      const row = [];
+      for (let j = 0; j < verteces.length; j++) {
+        row.push(0);
+      }
+      const linkedVerteces = vertex.links.values();
+      for (const linkedVertex of linkedVerteces) {
+        const index = verteces.indexOf(linkedVertex);
+        if (index > -1) {
+          const j = this.verteces.indexOf(linkedVertex);
+          row[index] = this.matrix.getElement(i, j);
+        }
+      }
+      newMatrix.pushRow(row.map(el => el || 0));
+    }
+    return newMatrix;
   }
 
   #add(obj) {
@@ -72,6 +94,29 @@ class Graph {
     const index = this.verteces.indexOf(obj);
     this.verteces.splice(index, 1);
     this.matrix.removeRow(index).removeCol(index);
+  }
+
+  get isComplete() {
+    for (let i = 0; i < this.verteces.length; i++) {
+      for (let j = 0; j < this.verteces.length; j++) {
+        if (i !== j && !this.matrix.rows[i][j]) {
+          return false;
+        }
+      }
+    }
+    return true;
+  }
+
+  get connections() {
+    let res = 0;
+    for (let i = 0; i < this.verteces.length; i++) {
+      for (let j = 0; j < this.verteces.length; j++) {
+        if (this.matrix.rows[i][j]) {
+          res++;
+        }
+      }
+    }
+    return res;
   }
 }
 

@@ -5,6 +5,10 @@ const Vertex = require('./Vertex.js');
 const fs = require('fs');
 
 module.exports = (vertecesNum, minPower, maxPower) => {
+  if (minPower > maxPower || maxPower > vertecesNum) {
+    throw new Error('Invalid values');
+  }
+
   const graph = new Graph();
 
   for (let i = 0; i < vertecesNum; i++) {
