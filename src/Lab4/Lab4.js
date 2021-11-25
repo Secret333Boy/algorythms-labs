@@ -7,7 +7,7 @@ const Hive = require('./Hive.js');
 const vertecesNum = 300;
 const minPower = 2;
 const maxPower = 30;
-const iterations = 1000;
+const iterations = 40;
 
 class Lab4 {
   start() {
@@ -35,19 +35,20 @@ class Lab4 {
     const hive = new Hive(graph);
     fields = hive.sendScouts(...fields);
 
+    let maxField = fields[0];
     for (let i = 0; i < iterations; i++) {
-      if (i % 20 === 0) console.log(`===${i}===`);
+      if (i % 20 === 0) {
+        console.log(`===${i}===`);
+        for (const field of fields) {
+          if (field.nectar > maxField.nectar) {
+            maxField = field;
+          }
+        }
+        console.log(`Max "clicka": ${maxField.nectar}`);
+      }
       fields = hive.sendWorkers(...fields);
       fields = hive.sendScouts(...fields);
     }
-
-    let maxField = fields[0];
-    for (const field of fields) {
-      if (field.nectar > maxField.nectar) {
-        maxField = field;
-      }
-    }
-
     console.log(`Max "clicka": ${maxField.nectar}`);
     console.log(
       graph.subgraph(

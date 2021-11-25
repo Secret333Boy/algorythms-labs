@@ -11,7 +11,7 @@ class Hive {
     workers: [],
     scouts: [],
   };
-  constructor(graph, beesNum = 100, location = null) {
+  constructor(graph, beesNum = 1000, location = null) {
     this.graph = graph;
     for (let i = 0; i < beesNum; i++) {
       if (i <= Math.round(percentageWorkers * beesNum) - 1) {
