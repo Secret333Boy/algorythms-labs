@@ -70,15 +70,13 @@ class Hive {
 
       worker.moveTo(fields[i]);
 
-      for (let i = 0; i < 10; i++) {
-        worker.moveToNeighbour();
-        const verteces = this.#getVertecesFromLocation(worker.field.location);
-        if (
-          this.graph.subgraph(verteces).isComplete &&
-          verteces.length > fields[i].nectar
-        ) {
-          newFields.push(worker.field);
-        }
+      worker.moveToNeighbour();
+      const verteces = this.#getVertecesFromLocation(worker.field.location);
+      if (
+        this.graph.subgraph(verteces).isComplete &&
+        verteces.length > fields[i].nectar
+      ) {
+        newFields.push(worker.field);
       }
     }
 
