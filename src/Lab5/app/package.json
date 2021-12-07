@@ -18,8 +18,7 @@
     "test": "react-scripts test --watchAll=false --passWithNoTests && npm run lint",
     "eject": "react-scripts eject",
     "lint": "eslint . --ignore-path .gitignore && prettier -c \"**/*.js\" \"**/*.json\" \"**/*.md\"",
-    "lint:fix": "eslint . --ignore-path .gitignore --fix && prettier --write \"**/*.js\" \"**/*.json\" \"**/*.md\" \"**/*.yml\"",
-    "prepare": "husky install"
+    "lint:fix": "eslint . --ignore-path .gitignore --fix && prettier --write \"**/*.js\" \"**/*.json\" \"**/*.md\" \"**/*.yml\""
   },
   "browserslist": {
     "production": [
@@ -43,7 +42,6 @@
     "eslint-plugin-promise": "^5.2.0",
     "eslint-plugin-react": "^7.27.1",
     "eslint-plugin-sonarjs": "^0.11.0",
-    "husky": "^7.0.4",
     "prettier": "^2.5.1"
   }
 }
