@@ -5,11 +5,11 @@ const generateGraph = require('./generateGraph.js');
 const Hive = require('./Hive.js');
 const fs = require('fs');
 
-const vertecesNum = 300;
+const vertecesNum = 30;
 const minPower = 2;
 const maxPower = 30;
 const iterations = 100;
-const beesCount = [100, 200, 300, 400, 500, 600, 700, 800, 900, 1000];
+const beesCount = [100];
 
 class Lab4 {
   start() {
