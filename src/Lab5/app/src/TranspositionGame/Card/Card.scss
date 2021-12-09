@@ -28,4 +28,12 @@
   &.possible {
     background-color: rgb(119, 49, 177);
   }
+  &.prevswap::after {
+    content: '*';
+    color: red;
+    z-index: 1000;
+    position: absolute;
+    top: 0;
+    margin: 10px;
+  }
 }

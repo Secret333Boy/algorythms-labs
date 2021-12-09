@@ -1,11 +1,21 @@
 import React from 'react';
 import './Card.scss';
 
-export default function Card({ children, pos, focused, possible, ...rest }) {
+export default function Card({
+  children,
+  pos,
+  focused,
+  possible,
+  prevswap,
+  ...rest
+}) {
   return (
     <div
       className={
-        'Card' + (focused ? ' focused' : '') + (possible ? ' possible' : '')
+        'Card' +
+        (focused ? ' focused' : '') +
+        (possible ? ' possible' : '') +
+        (prevswap ? ' prevswap' : '')
       }
       {...rest}
     >
