@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import Card from './Card/Card.jsx';
 import './TranspositionGame.scss';
 
@@ -104,10 +104,13 @@ export default function TranspositionGame({ cardsCount }) {
   const [AIturn, setAITurn] = useState(false);
   const [focusedNum1, setFocusedNum1] = useState(null);
   let focusedCard2 = null;
-  const initialCardsState = [];
-  for (let i = 0; i < cardsCount; i++) {
-    initialCardsState.push(i + 1);
-  }
+  const initialCardsState = useMemo(() => {
+    const initialCardsState = [];
+    for (let i = 0; i < cardsCount; i++) {
+      initialCardsState.push(i + 1);
+    }
+    return initialCardsState;
+  }, [cardsCount]);
   const [cardsState, setCardsState] = useState(initialCardsState);
   if (AIturn) {
     const AIMove = minimax(cardsState, 2).state;
