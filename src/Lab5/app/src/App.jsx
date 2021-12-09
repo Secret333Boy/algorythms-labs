@@ -5,7 +5,7 @@ import TranspositionGame from './TranspositionGame/TranspositionGame';
 function App() {
   return (
     <div className="App">
-      <TranspositionGame cardsCount="8" />
+      <TranspositionGame cardsCount="14" />
     </div>
   );
 }
