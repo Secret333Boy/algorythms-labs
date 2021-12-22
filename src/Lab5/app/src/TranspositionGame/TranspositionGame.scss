@@ -1,0 +1,23 @@
+.TranspositionGame {
+  width: 100%;
+  display: flex;
+  position: relative;
+  justify-content: space-around;
+  align-items: center;
+  background-color: rgb(99, 98, 98);
+  border: 1px solid black;
+  padding: 10px;
+  .winMessage {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    top: -100px;
+    font-size: 50px;
+  }
+  select#difficulty {
+    position: absolute;
+    top: 0;
+    right: 0;
+    transform: translateY(-125%);
+  }
+}

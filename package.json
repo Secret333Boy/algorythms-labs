@@ -15,10 +15,16 @@
     "@babel/core": "^7.14.3",
     "@babel/eslint-parser": "^7.14.3",
     "eslint": "^7.32.0",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^5.2.0",
     "eslint-config-metarhia": "^7.0.1",
     "eslint-config-prettier": "^8.3.0",
+    "eslint-config-react-app": "^6.0.0",
+    "eslint-plugin-flowtype": "^8.0.3",
     "eslint-plugin-import": "^2.24.2",
+    "eslint-plugin-jest": "^24.7.0",
     "eslint-plugin-prettier": "^4.0.0",
+    "eslint-plugin-react": "^7.27.1",
     "eslint-plugin-sonarjs": "^0.10.0",
     "husky": "^7.0.2",
     "prettier": "^2.2.1"
@@ -35,5 +41,15 @@
   "bugs": {
     "url": "https://github.com/Secret333Boy/algorythms-labs/issues"
   },
-  "homepage": "https://github.com/Secret333Boy/algorythms-labs#readme"
+  "homepage": "https://github.com/Secret333Boy/algorythms-labs#readme",
+  "dependencies": {
+    "@testing-library/jest-dom": "^5.16.1",
+    "@testing-library/react": "^11.2.7",
+    "@testing-library/user-event": "^12.8.3",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-scripts": "4.0.3",
+    "sass": "^1.44.0",
+    "web-vitals": "^1.1.2"
+  }
 }

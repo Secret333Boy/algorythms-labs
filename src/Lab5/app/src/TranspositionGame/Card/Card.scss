@@ -1,0 +1,39 @@
+.Card {
+  width: 100%;
+  min-height: 12em;
+  background-color: #ccc;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  &:not(:last-child) {
+    margin-right: 10px;
+  }
+  &:hover {
+    background-color: #fff;
+  }
+  h1 {
+    user-select: none;
+    font-size: 5vw;
+    &.red {
+      color: red;
+    }
+    &.green {
+      color: green;
+    }
+  }
+  &.focused {
+    background-color: #000;
+  }
+  &.possible {
+    background-color: rgb(119, 49, 177);
+  }
+  &.prevswap::after {
+    content: '*';
+    color: red;
+    z-index: 1000;
+    position: absolute;
+    top: 0;
+    margin: 10px;
+  }
+}
