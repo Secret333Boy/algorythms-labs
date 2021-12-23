@@ -1,0 +1,13 @@
+.ChestsGame {
+  background-color: #28B463;
+  width: 100vw;
+  height: 100vh;
+  & > .deck {
+    position: absolute;
+    width: 150px;
+    aspect-ratio: 394/572;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%);
+  }
+}

@@ -1,0 +1,21 @@
+.Card {
+  position: absolute;
+  width: inherit;
+  aspect-ratio: 394/572;
+  border-radius: 10px;
+  transform-style: preserve-3d;
+  perspective: 1000px;
+  transition: 1s;
+  cursor: pointer;
+  & > .front,
+  & > .back {
+    height: 100%;
+    position: absolute;
+    aspect-ratio: 394/572;
+    transition: 1s;
+  }
+
+  & > .front {
+    transform: rotateY(180deg);
+  }
+}
