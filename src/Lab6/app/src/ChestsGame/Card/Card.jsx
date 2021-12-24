@@ -13,16 +13,12 @@ export default function Card({ value, suit }) {
         suit={suit}
         style={{
           background: `url(./img/${value}${suit}.png)`,
-          backgroundRepeat: 'no-repeat',
-          backgroundSize: 'contain',
         }}
       />
       <div
         className="back"
         style={{
           background: 'url(./img/back.png)',
-          backgroundRepeat: 'no-repeat',
-          backgroundSize: 'contain',
         }}
       />
     </div>

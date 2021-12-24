@@ -1,13 +1,51 @@
 .ChestsGame {
-  background-color: #28B463;
+  background-color: #28b463;
   width: 100vw;
   height: 100vh;
+  position: relative;
   & > .deck {
     position: absolute;
     width: 150px;
     aspect-ratio: 394/572;
     top: 50%;
     left: 50%;
+    transform: translateX(-50%) translateY(-50%);
+  }
+
+  & > .AIHand,
+  & > .playerHand {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    height: 250px;
+    width: 75vw;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    & > .Card {
+      position: relative;
+      max-width: 10vw;
+      max-height: 150px;
+    }
+  }
+  & > .AIHand {
+    top: 0;
+  }
+  & > .playerHand {
+    bottom: 0;
+    & > .Card {
+      transform: rotateY(180deg);
+      transform-origin: bottom;
+      &:hover {
+        transform: rotateY(180deg) scale(1.2);
+      }
+    }
+  }
+
+  & > .playerChoice {
+    position: absolute;
+    top: 50%;
+    left: 75%;
     transform: translateX(-50%) translateY(-50%);
   }
 }

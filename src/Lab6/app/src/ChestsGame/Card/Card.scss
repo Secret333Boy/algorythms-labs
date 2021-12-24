@@ -5,7 +5,7 @@
   border-radius: 10px;
   transform-style: preserve-3d;
   perspective: 1000px;
-  transition: 1s;
+  transition: .25s;
   cursor: pointer;
   & > .front,
   & > .back {
@@ -13,6 +13,8 @@
     position: absolute;
     aspect-ratio: 394/572;
     transition: 1s;
+    background-repeat: no-repeat !important;
+    background-size: contain !important;
   }
 
   & > .front {
