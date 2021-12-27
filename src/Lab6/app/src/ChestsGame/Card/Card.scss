@@ -20,4 +20,8 @@
   & > .front {
     transform: rotateY(180deg);
   }
+
+  .cheater > & {
+    transform: rotateY(180deg);
+  }
 }

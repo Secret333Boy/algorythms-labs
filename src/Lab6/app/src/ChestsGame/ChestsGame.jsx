@@ -26,7 +26,6 @@ export default function ChestsGame() {
   const deckRef = useRef();
   const playerHandRef = useRef();
   const valuesChoiceRef = useRef();
-  const countChoiceRef = useRef();
   const suitChoiceRef = useRef();
   const [deckCards, setDeckCards] = useState(
     shuffle(
@@ -44,30 +43,28 @@ export default function ChestsGame() {
   const [AICards, setAICards] = useState([]);
   const [AITurn, setAITurn] = useState(false);
 
-  const getPlayerCardFromDeck = (count) => {
-    if (deckCards.length > 0) {
+  const getPlayerCardFromDeck = (count, deck = deckCards) => {
+    if (deck.length > 0) {
       const res = [];
       for (let i = 0; i < count; i++) {
-        const randomIndex = Math.round(Math.random() * (deckCards.length - 1));
-        res.push(deckCards[randomIndex]);
+        const randomIndex = Math.round(Math.random() * (deck.length - 1));
+        res.push(deck[randomIndex]);
       }
       setPlayerCards(playerCards.concat(res));
-      const newDeck = deckCards.filter((el) => !res.includes(el));
-      console.log(deckCards, newDeck);
-      setDeckCards(newDeck);
+      const newDeck = deck.filter((el) => !res.includes(el));
+      return newDeck;
     }
   };
-  const getAICardFromDeck = (count) => {
-    if (deckCards.length > 0) {
+  const getAICardFromDeck = (count, deck = deckCards) => {
+    if (deck.length > 0) {
       const res = [];
       for (let i = 0; i < count; i++) {
-        const randomIndex = Math.round(Math.random() * (deckCards.length - 1));
-        res.push(deckCards[randomIndex]);
+        const randomIndex = Math.round(Math.random() * (deck.length - 1));
+        res.push(deck[randomIndex]);
       }
       setAICards(AICards.concat(res));
-      const newDeck = deckCards.filter((el) => !res.includes(el));
-      console.log(deckCards, newDeck);
-      setDeckCards(newDeck);
+      const newDeck = deck.filter((el) => !res.includes(el));
+      return newDeck;
     }
   };
 
@@ -132,33 +129,36 @@ export default function ChestsGame() {
   }
 
   if (AITurn) {
-    const map = {};
-    for (const card of AICards) {
-      if (!map[card.value]) {
-        map[card.value] = [card.suit];
-      } else {
-        map[card.value].push(card.suit);
+    if (AICards.length !== 0) {
+      const map = {};
+      for (const card of AICards) {
+        if (!map[card.value]) {
+          map[card.value] = [card.suit];
+        } else {
+          map[card.value].push(card.suit);
+        }
+      }
+
+      let max = { value: Object.keys(map)[0], suit: map[Object.keys(map)[0]] };
+      for (const value in map) {
+        if (map[value].length !== 4 && map[value].length > max.suit.length)
+          max = { value, suit: map[value] };
+      }
+      const value = max.value;
+      const suit = suits.filter((el) => !max.suit.includes(el));
+      const randomSuit = suit[Math.floor(Math.random() * (suit.length - 1))];
+      for (let i = 0; i < playerCards.length; i++) {
+        if (
+          playerCards[i].value === value &&
+          playerCards[i].suit === randomSuit
+        ) {
+          transferCard(playerCards[i], true);
+          return;
+        }
       }
     }
 
-    let max = { value: Object.keys(map)[0], suit: map[Object.keys(map)[0]] };
-    for (const value in map) {
-      if (map[value].length > max.suit.length)
-        max = { value, suit: map[value] };
-    }
-    const value = max.value;
-    const suit = suits.filter((el) => !max.suit.includes(el));
-    const randomSuit = suit[Math.floor(Math.random() * (suit.length - 1))];
-    for (let i = 0; i < playerCards.length; i++) {
-      if (
-        playerCards[i].value === value &&
-        playerCards[i].suit === randomSuit
-      ) {
-        transferCard(playerCards[i], true);
-        return;
-      }
-    }
-    getAICardFromDeck(1);
+    setDeckCards(getAICardFromDeck(1));
     setAITurn(false);
   }
 
@@ -174,8 +174,9 @@ export default function ChestsGame() {
         ref={deckRef}
         onClick={() => {
           if (!isStarted) {
-            getPlayerCardFromDeck(4);
-            getAICardFromDeck(4);
+            let newDeck = getPlayerCardFromDeck(4);
+            newDeck = getAICardFromDeck(4, newDeck);
+            setDeckCards(newDeck);
             setIsStarted(true);
             return;
           }
@@ -197,22 +198,15 @@ export default function ChestsGame() {
           <option value="K">K</option>
           <option value="A">A</option>
         </select>
-        <select ref={countChoiceRef}>
-          <option value="1">1</option>
-          <option value="2">2</option>
-          <option value="3">3</option>
-          <option value="4">4</option>
-        </select>
         <select ref={suitChoiceRef}>
           <option value="Diamonds">♦</option>
           <option value="Hearts">♥</option>
-          <option value="Spades">♣</option>
-          <option value="Clubs">♠</option>
+          <option value="Clubs">♣</option>
+          <option value="Spades">♠</option>
         </select>
         <button
           onClick={() => {
             const value = valuesChoiceRef.current.value;
-            const count = countChoiceRef.current.value;
             const suit = suitChoiceRef.current.value;
             if (!AITurn) {
               for (let i = 0; i < AICards.length; i++) {
@@ -222,7 +216,7 @@ export default function ChestsGame() {
                 }
               }
               setAITurn(true);
-              getPlayerCardFromDeck(1);
+              setDeckCards(getPlayerCardFromDeck(1));
               console.log('Nope.');
               return;
             }

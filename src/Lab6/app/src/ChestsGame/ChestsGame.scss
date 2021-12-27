@@ -18,13 +18,13 @@
     left: 50%;
     transform: translateX(-50%);
     height: 250px;
-    width: 75vw;
+    width: 95vw;
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
     & > .Card {
       position: relative;
-      max-width: 10vw;
+      max-width: 5vw;
       max-height: 150px;
     }
   }
